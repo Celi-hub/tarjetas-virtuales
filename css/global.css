@@ -1,0 +1,220 @@
+:root { --color-principal: #a68b6d; }
+
+body { font-family: 'Segoe UI', sans-serif; background-color: #f9f6f2; color: #333; margin: 0; }
+
+/* Header y Footer */
+.main-header {
+    background-color: #fffffff9;
+    border-bottom: 1.5px solid #d39c5f;
+    padding: 6px 0;        /* antes 10px — lo hace más fino */
+}
+
+.header-container { 
+    max-width: 1100px; 
+    margin: 0 auto; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0 10px; 
+    align-items: center; /* este y el que sigue se agregaron cuando saqué el texto*/
+    min-height: 60px;      /* altura mínima del área interna */
+}
+
+/* Alineación vertical perfecta entre logo y botones */
+
+
+/* --- FORMATO DEL LOGO Y SLOGAN --- */
+.logo-placeholder { width: 70px; height: 70px; background-color: #f3ede6; border: 1px dashed #a68b6d; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #a68b6d; text-align: center; }
+
+.brand-text{ display:flex; /*flex-direction:column;*/ position: relative; top: -5;}
+.brand-name {margin: -16px 0 0 0; font-family: 'Playfair Display', serif; 
+    color: #79563d; /*var(--color-principal);*/     font-size: 1.8rem; 
+    font-weight:500;/*agregado*/ line-height: 1; /*agregado*/ /*letter-spacing: 1px; */}
+.brand-wrapper { display: flex; align-items: center; gap: 5px; }
+.brand-digitales{ 
+    font-family: "Ms Madi", cursive;/*font-family: 'Allura', cursive;*/ 
+    font-size: 2.6rem; font-weight: 450; color: #d48b37; position: absolute;
+    left: 20px;      /* mueve horizontalmente */
+    top: 0px;        /* mueve verticalmente */ transform: rotate(-8deg); /* inclinación */
+    /*opacity: 0.9;*/
+}
+    .brand-slogan { 
+    color: #8c7358; 
+    font-family:'Great Vibes', cursive; /*antes font-style: italic; display: block; */
+    font-size:1.6rem; /*antes font-size: 0.85rem; */
+    }
+/*.header-logo{width:220px; height:auto; object-fit:contain; }*/
+/* Logo SVG del nombre: más ancho, altura proporcional */
+.header-logo {
+    width: 260px;          /* ajustá este valor a tu gusto: 180px / 220px / 260px */
+    height: auto;          /* mantiene proporción del SVG automáticamente */
+    object-fit: contain;
+    display: block;
+}
+    
+.user-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+.main-footer { background-color: #1e293b; color: #94a3b8; text-align: center; padding: 30px; border-top: 4px solid var(--color-principal); }
+
+/* --- BOTONES DEL HEADER (LOGIN/REGISTRO) --- */
+.auth-buttons-wrapper { display: flex; align-items: center; gap: 15px; } /*botones "Iniciar sesión" y "Registrarse".*/
+.btn-login-header { text-decoration: none; color: #a68b6d; font-weight: bold; font-size: 0.95rem; white-space: nowrap; }
+.btn-primary-header { background-color: #a98d6f; color: white; padding: 8px 16px; 
+    border-radius: 20px; text-decoration: none; font-size: 0.9rem; font-weight: bold; transition: background 0.2s; }
+.btn-primary-header:hover { background-color: #8e7356; }
+
+
+/* Footer completo */
+.main-footer p { margin: 5px 0; }
+.main-footer strong { color: #ffffff; }
+
+/* --- CONTROL DEL ÁREA DE USUARIO EN EL HEADER --- */
+.user-actions { display: flex; flex-direction: column; /* Alinea el "Hola..." arriba y el "Salir" abajo */
+    align-items: flex-end;  /* Los pega bien contra el borde derecho */ justify-content: center;
+    gap: 5px; /* Separación justa y exacta de 5px entre renglones */ }
+.user-welcome { font-size: 1.2rem; font-style: oblique; color:#8e7356; white-space: nowrap; /* Evita que el nombre se corte en dos renglones */ }
+
+/* Botones y logout (estilos generales para toda la web) */
+.btn-logout { color: #c0392b; text-decoration: none; font-size: 0.85rem; border: 1px solid #c0392b; padding: 4px 10px; border-radius: 15px; transition: 0.3s; }
+.btn-logout:hover { background: #c0392b; color: white; }
+.btn-primary { background: var(--color-principal); color: white; padding: 8px 20px; margin-top: 25px; border-radius: 20px; text-decoration: none; }
+
+/*menu del usuario*/
+/*XXXXXXXXXXXXXXXXXX*/
+
+.dropdown { 
+    position: relative; 
+    display: inline-block; 
+    cursor: pointer;
+    /* Un pequeño padding extra abajo para que el menú no se desconecte */
+    padding-bottom: 10px;}
+
+.dropdown-content { 
+    display: none; 
+    position: absolute; 
+    right: 0; 
+    background-color: #ffffff; 
+    min-width: 180px; 
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.15); 
+    border-radius: 8px; 
+    z-index: 9999; 
+    padding: 10px 0; 
+    margin-top: 10px; }
+    
+.dropdown-content a { 
+    color: #344e67; 
+    padding: 10px 20px; 
+    text-decoration: none; 
+    display: block; 
+    font-size: 0.9rem; }
+    
+.dropdown-content a:hover { 
+    background-color: #fcfbf8; 
+    color: #8e7356; }
+
+    .dropdown:hover .dropdown-content, .dropdown-content:hover { 
+    display: block; }
+
+    /* ==========================================================================
+   PARCHE global.css — agregar al final del archivo existente
+   ========================================================================== */
+
+/* Logo como link (brand-wrapper es ahora un <a>) */
+.brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+.brand-wrapper:hover .brand-name {
+    color: var(--color-principal);
+    transition: color 0.2s;
+}
+
+/* Botón del dropdown (reemplaza el <span> anterior) */
+.dropdown-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-style: oblique;
+    color: #8e7356;
+    white-space: nowrap;
+    padding: 0;
+}
+.dropdown-toggle:hover { color: var(--color-principal); }
+
+/* Ítem de peligro en el menú (Cerrar sesión) */
+.menu-item-danger {
+    color: #c0392b !important;
+}
+.menu-item-danger:hover {
+    background-color: #fdf2f2 !important;
+    color: #922b21 !important;
+}
+
+/* Guardar para redirect post-login (usado por validar_login.php) */
+/* No requiere CSS, es solo lógica PHP. */
+
+/* ── Logo como link (brand-wrapper es ahora un <a> en header.php) ── */
+a.brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0px; /*con texto el padding subirlo a 12px*/
+    text-decoration: none;
+}
+
+a.brand-wrapper:hover .brand-name {
+    color: var(--color-principal);
+    transition: color 0.2s;
+}
+ 
+/* ── Botón del dropdown (reemplaza el <span> por <button>) ── */
+.dropdown-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-style: oblique;
+    color: #8e7356;
+    white-space: nowrap;
+    padding: 0;
+    line-height: inherit;
+}
+.dropdown-toggle:hover { color: var(--color-principal); }
+.dropdown-toggle:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+ 
+/* ── Ítem de peligro en menú desplegable (Cerrar sesión) ── */
+.menu-item-danger { color: #c0392b !important; }
+.menu-item-danger:hover {
+    background-color: #fdf2f2 !important;
+    color: #922b21 !important;
+}
+ 
+/* ── Mensaje de despedida en index si viene de logout ── */
+.adios-banner {
+    background: #fdf8ef;
+    border-bottom: 1px solid #f0ddb8;
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    color: #7a5c2e;
+}
+ 
+/* ── Mejoras de accesibilidad globales ── */
+:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 2px;
+}
+ 
+/* ── Transición suave en todos los links ── */
+a { transition: color 0.2s; }
+ 
+/* ── Charset utf8mb4: los emojis en títulos no rompen el layout ── */
+h1, h2, h3, h4 { word-break: break-word; }

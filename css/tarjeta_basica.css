@@ -1,0 +1,145 @@
+/* Estilos para la Tarjeta Virtual Móvil */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f1ea; /* Fondo crema muy sutil */
+    font-family: 'Montserrat', sans-serif;
+    color: #4a4a4a;
+    display: flex;
+    justify-content: center;
+}
+
+/* Forzamos que en pantallas grandes emule el ancho de un celular */
+.tarjeta-wrapper {
+    width: 100%;
+    max-width: 450px;
+    background-color: #ffffff;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+section {
+    padding: 40px 25px;
+    text-align: center;
+    border-bottom: 1px dashed #e0dcd3;
+}
+
+/* --- SECCIÓN PORTADA --- */
+.seccion-portada {
+    background-color: #faf8f5;
+    padding: 60px 25px;
+}
+
+.prefijo {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #a68b6d;
+    margin-bottom: 10px;
+}
+
+.nombres-titulo {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    color: #7d6346;
+    margin: 10px 0;
+    font-weight: 400;
+}
+
+.frase-invitacion {
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #777;
+    margin-top: 20px;
+}
+
+/* --- SECCIÓN INFO --- */
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #4a4a4a;
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+}
+
+.bloque-detalle {
+    margin-bottom: 30px;
+}
+
+.bloque-detalle .icono {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.dato-principal {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 5px 0;
+    color: #2c3e50;
+}
+
+.dato-secundario {
+    font-size: 0.95rem;
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.btn-maps {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #ffffff;
+    color: #a68b6d;
+    border: 1px solid #a68b6d;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+}
+
+.btn-maps:hover {
+    background-color: #a68b6d;
+    color: #ffffff;
+}
+
+/* --- SECCIÓN CONFIRMAR --- */
+.seccion-confirmar p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.btn-whatsapp {
+    display: block;
+    background-color: #25d366;
+    color: #ffffff;
+    padding: 15px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+    transition: background-color 0.3s;
+}
+
+.btn-whatsapp:hover {
+    background-color: #20ba5a;
+}
+
+/* --- FOOTER --- */
+.tarjeta-footer {
+    margin-top: auto;
+    background-color: #faf8f5;
+    padding: 20px;
+    font-size: 0.75rem;
+    text-align: center;
+    color: #999;
+    letter-spacing: 1px;
+}

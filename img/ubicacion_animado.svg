@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="100%" height="300">
+  <style>
+    /* Animación del marcador de ubicación (Caída + Rebote) */
+    .pin {
+      animation: bounce 2s infinite cubic-bezier(0.28, 0.84, 0.42, 1);
+      transform-origin: 150px 220px;
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: translateY(-80px) scaleY(1.05);
+      }
+      45% {
+        transform: translateY(0) scaleY(0.85) scaleX(1.15); /* Impacto/Aplastamiento */
+      }
+      55% {
+        transform: translateY(-15px) scaleY(1.05) scaleX(0.95); /* Rebote suave */
+      }
+      65% {
+        transform: translateY(0) scaleY(0.95) scaleX(1.05);
+      }
+      75%, 100% {
+        transform: translateY(0) scaleY(1) scaleX(1); /* Reposo breve */
+      }
+    }
+
+    /* Animación de la sombra en el suelo */
+    .shadow {
+      animation: shadow-scale 2s infinite cubic-bezier(0.28, 0.84, 0.42, 1);
+      transform-origin: 150px 230px;
+    }
+
+    @keyframes shadow-scale {
+      0% {
+        transform: scale(0.4);
+        opacity: 0.15;
+      }
+      45% {
+        transform: scale(1);
+        opacity: 0.35; /* Sombra más oscura cuando está cerca del suelo */
+      }
+      55% {
+        transform: scale(0.8);
+        opacity: 0.25;
+      }
+      65% {
+        transform: scale(1);
+        opacity: 0.35;
+      }
+      75%, 100% {
+        transform: scale(1);
+        opacity: 0.35;
+      }
+    }
+  </style>
+
+  <!-- Sombra en la base -->
+  <ellipse class="shadow" cx="150" cy="230" rx="40" ry="10" fill="#2C3E50" opacity="0.3" />
+
+  <!-- Marcador de Ubicación (Pin) -->
+  <g class="pin">
+    <!-- Forma exterior del Pin -->
+    <path d="M 150 50 
+             C 105 50, 70 85, 70 130 
+             C 70 185, 135 215, 150 220 
+             C 165 215, 230 185, 230 130 
+             C 230 85, 195 50, 150 50 Z" 
+          fill="#FF4757" />
+
+    <!-- Círculo interior blanco -->
+    <circle cx="150" cy="120" r="30" fill="#FFFFFF" />
+  </g>
+</svg>

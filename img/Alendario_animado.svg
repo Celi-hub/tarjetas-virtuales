@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 350" width="100%" height="350">
+  <style>
+    /* Trazo animado usando stroke-dashoffset */
+    .animated-check {
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      animation: drawCheck 3s infinite ease-in-out;
+    }
+
+    @keyframes drawCheck {
+      0% {
+        stroke-dashoffset: 60;
+      }
+      35%, 85% {
+        stroke-dashoffset: 0; /* Tilde dibujado completamente */
+      }
+      100% {
+        stroke-dashoffset: 60; /* Reinicia el ciclo */
+      }
+    }
+  </style>
+
+  <g transform="translate(10, 10)">
+    <!-- Base del Calendario (Dorado claro) -->
+    <path d="M 110,60 H 280 C 290,60 295,65 295,75 V 195 C 295,205 290,210 280,210 H 110 C 100,210 95,205 95,195 V 75 C 95,65 100,60 110,60 Z" fill="#D2B579" />
+    
+    <!-- Anillas superiores -->
+    <rect x="180" y="40" width="12" height="25" rx="5" fill="#8C733E" />
+    <rect x="220" y="40" width="12" height="25" rx="5" fill="#8C733E" />
+    <rect x="260" y="40" width="12" height="25" rx="5" fill="#8C733E" />
+    
+    <!-- Cuadrados de días (Marrón Oscuro como la cara del reloj) -->
+    <!-- Fila 1 -->
+    <rect x="110" y="90" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="150" y="90" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="190" y="90" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="230" y="90" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="270" y="90" width="22" height="22" rx="6" fill="#8C733E" />
+    
+    <!-- Fila 2 -->
+    <rect x="110" y="130" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="150" y="130" width="22" height="22" rx="6" fill="#8C733E" /> <!-- Día donde se dibuja el tilde -->
+    <rect x="190" y="130" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="230" y="130" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="270" y="130" width="22" height="22" rx="6" fill="#8C733E" />
+    
+    <!-- Fila 3 -->
+    <rect x="110" y="170" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="150" y="170" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="190" y="170" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="230" y="170" width="22" height="22" rx="6" fill="#8C733E" />
+    <rect x="270" y="170" width="22" height="22" rx="6" fill="#8C733E" />
+
+    <!-- Reloj -->
+    <circle cx="80" cy="80" r="70" fill="#D2B579" />
+    <circle cx="80" cy="80" r="62" fill="#8C733E" />
+    
+    <!-- Marcas del reloj -->
+    <line x1="80" y1="23" x2="80" y2="33" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+    <line x1="80" y1="127" x2="80" y2="137" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+    <line x1="137" y1="80" x2="127" y2="80" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+    <line x1="23" y1="80" x2="33" y2="80" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" />
+    
+    <!-- Agujas del reloj (Blancas) -->
+    <line x1="80" y1="80" x2="52" y2="52" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" />
+    <line x1="80" y1="80" x2="80" y2="40" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" />
+
+    <!-- Tilde Grueso Animado Blanco (#FFFFFF) -->
+    <path class="animated-check" 
+          d="M 146,140 L 158,152 L 176,126" 
+          fill="none" 
+          stroke="#FFFFFF" 
+          stroke-width="11" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+  </g>
+</svg>

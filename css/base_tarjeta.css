@@ -1,0 +1,148 @@
+/* ==========================================================================
+   MOMENTIA - ESQUELETO ESTRUCTURAL GLOBAL (base_tarjeta.css)
+   Contiene el posicionamiento, resets, animaciones y componentes comunes.
+   Usa Custom Properties (variables) para heredar el diseño estético del tema activo.
+   ========================================================================== */
+
+/* ── 1. RESETEO Y BASE DEL SISTEMA ── */
+*, *::before, *::after { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+html { 
+    scroll-behavior: smooth; 
+}
+
+body {
+    background-color: var(--bg-principal);
+    color: var(--text-dark);
+    font-family: var(--fuente-textos);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── 2. ARQUITECTURA DE MÓDULOS (Estructura Base) ── */
+.modulo-fullscreen {
+    min-height: 100svh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.modulo-contenido {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes entrarSuave {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── 3. COMPONENTE: PANTALLA DE MISTERIO (Pre-portada) ── */
+.misterio-wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: var(--bg-principal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s var(--animacion-suave);
+}
+
+.misterio-contenido {
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    max-width: 420px;
+    width: 100%;
+}
+
+.misterio-texto {
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2rem, 6vw, 2.8rem);
+    font-style: italic;
+    color: var(--text-dark);
+    opacity: 0;
+    animation: entrarSuave 1.5s ease forwards 0.3s; 
+}
+
+.misterio-botones {
+    opacity: 0;
+    animation: entrarSuave 1.5s ease forwards 1.2s; 
+    width: 100%;
+}
+
+.misterio-pregunta {
+    font-family: var(--fuente-textos);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-mid);
+    margin-bottom: 20px;
+}
+
+.botones-wrap {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-misterio {
+    background: transparent;
+    color: var(--text-dark);
+    border: 1px solid var(--gold);
+    padding: 12px 20px;
+    font-family: var(--fuente-textos);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: var(--radius, 3px);
+    transition: all var(--transicion, 0.3s ease);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icono-svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--gold-dark);
+    transition: stroke var(--transicion, 0.3s ease);
+}
+
+.btn-misterio:hover {
+    background: var(--gold);
+    color: var(--white);
+}
+
+.btn-misterio:hover .icono-svg {
+    stroke: var(--white);
+}

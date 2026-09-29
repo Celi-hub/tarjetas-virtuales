@@ -1,0 +1,320 @@
+/* ==========================================================================
+   VARIABLES Y ANIMACIONES BASE (Tipografía cinética y fluidez)
+   ========================================================================== */
+@keyframes floatUp {
+    0% { transform: translateY(30px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes textStretch {
+    0% { letter-spacing: normal; }
+    100% { letter-spacing: 2px; }
+}
+
+/* ==========================================================================
+   HERO SECTION (Inmersiva)
+   ========================================================================== */
+.hero-section { 
+    background: linear-gradient(135deg, #fdfbf7 0%, #f5f0e6 100%); 
+    padding: 100px 20px 50px; /*padding: 140px 20px 60px; */
+    text-align: center; 
+    overflow: hidden; /* Evita que los elementos 3D rompan el scroll horizontal */
+}
+
+.hero-content {
+    animation: floatUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.hero-content h2 { 
+    font-size: 2.3rem;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #344e67; 
+    margin: 30px 0 0 0; 
+    font-weight: 800; 
+    letter-spacing: 3px;
+    transition: all 0.5s ease;
+}
+
+/* Efecto cinético simple en hover para el título */
+.hero-content h2:hover {
+    animation: textStretch 0.5s ease forwards;
+    color: var(--color-principal);
+}
+.hero-content h3 { 
+    font-size: 1.3rem;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; /* "Ms Madi", cursive;*/
+    color: var(--color-principal);
+    margin: 10px 0 15px 0; 
+    font-weight: 500; 
+    transition: all 0.5s ease;
+}
+
+.hero-content p { 
+    color: #7a6e67; 
+    margin: 10px auto 30px auto; 
+    line-height: 1.6; 
+    max-width: 600px;
+}
+
+/* Contenedor preparado para Spline 3D o tu collage mixto */
+.portada-container-flotante { 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    position: relative; 
+    height: 120px; 
+}
+
+/* Si seguís usando imagen mientras armas el 3D, le damos vida */
+.imagen-flotante { 
+    position: absolute; 
+    top: -60px; 
+    z-index: 10; 
+    max-width: 650px; 
+    width: 100%; 
+    height: auto; 
+    animation: breathe 6s ease-in-out infinite; /* Animación de respiración continua */
+}
+
+/* ==========================================================================
+   CATÁLOGO DE PROPUESTAS (Tarjetas interactivas)
+   ========================================================================== */
+.catalog-section { 
+    padding: 0px 10px; 
+    background-color: #ffffff; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+}
+
+.section-title { text-align: center; margin-bottom: 40px;}
+.section-title h3 { font-size: 2.2rem; color: #344e67; margin-bottom: 10px; }
+.section-title p { color: #7f8c8d; font-size: 1.1rem; font-style: italic; }
+
+.catalog-container { 
+    display: flex; 
+    gap: 25px; 
+    justify-content: center; 
+    max-width: 1100px; 
+    margin: 0 auto;
+    flex-wrap: nowrap; 
+}
+
+/* Tarjetas con efecto de elevación suave */
+.catalog-card { 
+    background: #ffffff; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 20px; 
+    padding: 35px 20px;
+    width: 600px; /*ancho*/
+    position: relative; 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); 
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+}
+
+.catalog-card:hover { 
+    transform: translateY(-10px); 
+    box-shadow: 0 20px 40px rgba(166, 139, 109, 0.15); 
+}
+
+.catalog-card.premium { 
+    border: 2px solid var(--color-principal); 
+    background: linear-gradient(180deg, #ffffff 0%, #fffcf9 100%); 
+    transform: scale(1.05); /* Ligeramente más grande por defecto */
+}
+
+.catalog-card.premium:hover {
+    transform: scale(1.05) translateY(-10px);
+}
+
+.card-tag { 
+    align-self: flex-end; 
+    background-color: #edf2f7; 
+    color: #4a5568; 
+    font-size: 0.8rem;
+    font-weight: 600; 
+    padding: 6px 10px; 
+    border-radius: 20px; 
+    text-transform: uppercase; 
+    margin-bottom: 10px; 
+    letter-spacing: 1px;
+}
+
+.card-tag.highlight { 
+    background-color: #f6eecd; 
+    color: rgb(112, 109, 109); 
+    box-shadow: 0 4px 10px rgba(220, 209, 197, 0.3);
+}
+
+.catalog-card h4 { font-size: 1.5rem; color: #2c3e50; margin: 0; text-align: center; }
+.card-desc { color: #64748b; font-size: 1rem; line-height: 1.6; margin-bottom: 30px; flex-grow: 1; }
+
+/* ==========================================================================
+   BOTONES (Interacción fluida)
+   ========================================================================== */
+.btn-hero { 
+    display: inline-block; 
+    background-color: var(--color-principal); 
+    color: white;
+    text-decoration: none; 
+    padding: 15px 20px; 
+    font-size: 1.1rem; 
+    font-weight: bold; 
+    border-radius: 40px;
+    box-shadow: 0 10px 20px rgba(166, 139, 109, 0.2); 
+    transition: all 0.3s ease; 
+}
+
+.btn-hero:hover { 
+    background-color: #8e7356; 
+    transform: translateY(-3px) scale(1.02); 
+    box-shadow: 0 15px 25px rgba(166, 139, 109, 0.3);
+}
+
+.card-actions-wrapper { display: flex; flex-direction: column; gap: 10px; }
+
+.btn-card-demo {
+    display: block; 
+    text-align: center;
+    background-color: transparent;
+    color: var(--color-principal); 
+    border: 2px solid var(--color-principal);
+    text-decoration: none; 
+    padding: 12px; 
+    border-radius: 12px; 
+    font-weight: bold; 
+    transition: all 0.3s ease; 
+}
+
+.btn-card-demo:hover { background-color: var(--color-principal); color: white; }
+
+.btn-card-select {
+    display: block; 
+    text-align: center;
+    background-color: #f8fafc;
+    color: #475569; 
+    text-decoration: none; 
+    padding: 6px; 
+    border-radius: 12px; 
+    font-weight: bold; 
+    transition: all 0.3s ease;
+}
+
+.btn-card-select:hover { background-color: #e2e8f0; color: #1e293b; }
+
+.premium .btn-card-select { background-color: var(--color-principal); color: white; }
+.premium .btn-card-select:hover { background-color: #8e7356; }
+
+/* ==========================================================================
+   MEDIA QUERIES (Adaptabilidad total)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .catalog-container { flex-wrap: wrap; }
+    .catalog-card.premium { transform: scale(1); }
+    .catalog-card.premium:hover { transform: translateY(-5px); }
+    
+    .portada-container-flotante { height: auto; margin-top: 20px; }
+    .imagen-flotante, .imagen-flotante-3d { 
+        position: relative; 
+        top: 0; 
+        max-height: 250px; 
+        width: 90%; 
+    }
+    .hero-section { padding: 40px 20px; }
+    .hero-content h2 { font-size: 2.2rem; }
+}
+
+/* ── Plan Deluxe deshabilitado (sin inline styles) ── */
+.card-proximamente {
+    opacity: 0.82;
+}
+.card-tag-pronto {
+    background: #64748b;
+    color: white;
+}
+.btn-disabled {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: not-allowed;
+    user-select: none;
+}
+.btn-card-demo.btn-disabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    border: 2px solid #e2e8f0;
+}
+.btn-card-select.btn-disabled {
+    background: #cbd5e1;
+    color: #64748b;
+    box-shadow: none;
+}
+ 
+/* ── Sección Cómo Funciona ── */
+.como-funciona-section {
+    padding: 60px 20px 70px;
+    background: linear-gradient(180deg, #ffffff 0%, #fdfbf7 100%);
+    text-align: center;
+}
+.pasos-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    max-width: 800px;
+    margin: 40px auto 0;
+    flex-wrap: wrap;
+}
+.paso {
+    flex: 1;
+    min-width: 160px;
+    max-width: 220px;
+    padding: 0 16px;
+}
+.paso-numero {
+    width: 48px;
+    height: 48px;
+    background: var(--color-principal);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin: 0 auto 14px auto;
+    box-shadow: 0 4px 12px rgba(166,139,109,0.25);
+}
+.paso h4 {
+    font-size: 1rem;
+    color: #344e67;
+    margin: 0 0 8px 0;
+    font-weight: 700;
+}
+.paso p {
+    font-size: 0.88rem;
+    color: #7a6e67;
+    line-height: 1.5;
+    margin: 0;
+}
+.paso-conector {
+    font-size: 1.5rem;
+    color: #d0c4b8;
+    margin-top: 14px;
+    padding: 0 4px;
+    flex-shrink: 0;
+}
+ 
+@media (max-width: 600px) {
+    .pasos-container { flex-direction: column; align-items: center; gap: 24px; }
+    .paso-conector { transform: rotate(90deg); margin: 0; }
+    .paso { max-width: 100%; }
+}
