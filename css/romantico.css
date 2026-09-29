@@ -1,0 +1,201 @@
+/* ==========================================================================
+   MOMENTIA - TEMA: ROMÁNTICO
+   Rosa empolvado, caligrafía y pétalos. Bodas, compromisos, aniversarios,
+   15 años y todo lo que se celebra con cariño.
+
+   Toda la estructura y los componentes viven en base_tarjeta.css; este
+   archivo solo define los tokens del tema y su decoración.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Lato:wght@300;400;700&display=swap');
+
+:root {
+    --gold:          #b04a66;
+    --gold-light:    #f2c9d3;
+    --gold-dark:     #8a3049;
+    --gold-bg:       rgba(176, 74, 102, 0.07);
+    --gold-border:   rgba(214, 140, 158, 0.42);
+    --on-accent:     #ffffff;
+    --petalo:        #f4b8c6;
+    --petalo-2:      #f9d5dd;
+
+    --bg-principal:  #fff5f6;
+    --bg-secundario: #fde8ec;
+    --text-dark:     #4a2a33;
+    --text-mid:      #6e4b55;
+    --text-light:    #90727b;
+
+    --fuente-titulos: 'Playfair Display', Georgia, serif;
+    --fuente-textos:  'Lato', 'Segoe UI', sans-serif;
+    --titulo-estilo:  italic;
+    --titulo-peso:    400;
+    --eyebrow-spacing: 3.5px;
+
+    --radius:         999px;
+    --radius-sm:      12px;
+    --radius-card:    22px;
+
+    --surface-bg:     linear-gradient(160deg, rgba(255,255,255,.9), rgba(255,240,243,.75));
+    --surface-border: rgba(214, 140, 158, 0.38);
+    --surface-shadow: 0 14px 34px rgba(176, 74, 102, 0.10);
+    --surface-blur:   6px;
+
+    --field-bg:       transparent;
+    --field-border:   0 solid transparent;
+    --field-border-b: 1px solid var(--petalo);
+    --field-radius:   0;
+    --field-pad:      10px 2px;
+
+    --btn-pad:        13px 34px;
+    --btn-size:       0.74rem;
+    --btn-peso:       700;
+    --btn-spacing:    2.4px;
+    --btn-sombra:     0 6px 16px rgba(176, 74, 102, 0.22);
+    --btn-sombra-hover: 0 10px 22px rgba(176, 74, 102, 0.3);
+    --btn-mueve:      2px;
+
+    --glow-color:     rgba(244, 184, 198, 0.42);
+    --glow-size:      min(84vw, 560px);
+
+    --marco-border:   1px solid rgba(214, 140, 158, 0.6);
+    --marco-bg:       rgba(255, 255, 255, 0.7);
+    --marco-radius:   220px 220px 24px 24px;
+    --marco-shadow:   0 22px 50px rgba(176, 74, 102, 0.14);
+}
+
+/* ── Corazón en lugar del destello en divisores ── */
+.portada-linea-decorativa span,
+.divisor-decorativo span { font-size: 0; }
+.portada-linea-decorativa span::before,
+.divisor-decorativo span::before { content: '\2665'; font-size: 0.95rem; color: var(--gold); }
+
+.portada-linea-decorativa::before,
+.portada-linea-decorativa::after,
+.divisor-decorativo::before,
+.divisor-decorativo::after { background: linear-gradient(to right, transparent, var(--petalo)); }
+.portada-linea-decorativa::after,
+.divisor-decorativo::after { background: linear-gradient(to left, transparent, var(--petalo)); }
+
+/* ── Pantalla de misterio ── */
+.misterio-wrapper {
+    background:
+        radial-gradient(circle at 15% 15%, var(--petalo-2) 0, transparent 40%),
+        radial-gradient(circle at 85% 85%, var(--petalo) 0, transparent 42%),
+        var(--bg-principal);
+}
+.misterio-texto { font-family: 'Great Vibes', cursive; font-style: normal; font-size: clamp(2.6rem, 11vw, 3.8rem); color: var(--gold-dark); font-weight: 400; }
+.btn-misterio { background: rgba(255,255,255,.8); border-color: var(--gold); color: var(--gold-dark); font-weight: 700; }
+
+/* ── Portada: ventana en arco, flores y pétalos ── */
+.portada-wrapper {
+    background:
+        radial-gradient(ellipse 70% 40% at 0% 0%, var(--petalo-2) 0, transparent 70%),
+        radial-gradient(ellipse 70% 40% at 100% 100%, var(--petalo) 0, transparent 70%),
+        var(--bg-principal);
+}
+.portada-fondo-animado {
+    background: radial-gradient(circle, var(--petalo) 0%, transparent 68%);
+    opacity: 0.3;
+}
+
+/* Pétalos que caen (dos capas con distinta velocidad) */
+.portada-wrapper::before,
+.portada-wrapper::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    pointer-events: none;
+    z-index: 3;
+    background:
+        radial-gradient(ellipse 7px 11px at 8% 50%, var(--petalo) 98%, transparent),
+        radial-gradient(ellipse 6px 9px at 27% 50%, var(--petalo-2) 98%, transparent),
+        radial-gradient(ellipse 8px 12px at 46% 50%, var(--petalo) 98%, transparent),
+        radial-gradient(ellipse 6px 10px at 68% 50%, var(--petalo-2) 98%, transparent),
+        radial-gradient(ellipse 7px 11px at 90% 50%, var(--petalo) 98%, transparent);
+    animation: caerPetalos 14s linear infinite;
+    opacity: 0.85;
+}
+.portada-wrapper::after {
+    left: 6%;
+    width: 88%;
+    animation-duration: 21s;
+    animation-delay: -8s;
+    transform: scaleX(-1);
+}
+@keyframes caerPetalos {
+    0%   { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(calc(100svh + 80px)) rotate(35deg); }
+}
+
+.portada-marco { padding-top: clamp(64px, 16vw, 96px); }
+.portada-frase { font-style: italic; font-size: clamp(1.05rem, 4.4vw, 1.4rem); color: var(--gold-dark); }
+.portada-nombre {
+    font-family: 'Great Vibes', cursive;
+    font-style: normal;
+    font-weight: 400;
+    font-size: clamp(3.2rem, 15vw, 5.6rem);
+    line-height: 1.05;
+    color: var(--gold-dark);
+}
+.portada-fecha { color: var(--text-mid); letter-spacing: 3px; font-weight: 400; }
+
+/* ── Componentes ── */
+.modulo-titulo { font-weight: 400; }
+.eyebrow { font-weight: 700; color: var(--gold); }
+.icono-modulo { color: var(--gold); }
+.modulo-regalos .icono-modulo { color: var(--gold); }
+.modulo-titulo::after {
+    content: '\2665';
+    display: block;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    font-style: normal;
+    color: var(--petalo);
+}
+
+.btn,
+.btn-accion,
+.rsvp-submit,
+.btn-muro-submit,
+.btn--gold {
+    background: linear-gradient(135deg, #c25a77, var(--gold-dark));
+    border-color: transparent;
+    color: #fff;
+}
+.btn svg,
+.btn-accion svg { stroke: #fff; }
+.btn:hover,
+.btn-accion:hover,
+.rsvp-submit:hover,
+.btn-muro-submit:hover,
+.btn--gold:hover { background: linear-gradient(135deg, #d0698a, var(--gold)); }
+.btn--whatsapp { background: #fff; color: var(--wa-green-dark); border-color: var(--wa-green); box-shadow: none; }
+.btn--whatsapp svg { fill: currentColor; }
+.btn--spotify { background: #fff; box-shadow: none; }
+.btn--mp { background: #fff; box-shadow: none; }
+.btn--secundario { background: rgba(255,255,255,.7); color: var(--text-mid); border-color: var(--gold-light); box-shadow: none; }
+.btn--secundario:hover { background: var(--bg-secundario); border-color: var(--gold); }
+.btn--copiar { background: #fff; color: var(--gold-dark); border-color: var(--gold-light); box-shadow: none; }
+.btn--copiar:hover { background: var(--gold); color: #fff; }
+.btn--mp-disabled { background: transparent; box-shadow: none; }
+
+.campo-form-opciones label,
+.rsvp-opcion label,
+.rsvp-opcion-item label { border-color: var(--petalo); background: rgba(255,255,255,.7); }
+
+.lt-punto { background: var(--petalo-2); border-color: var(--gold); }
+.lt-fecha { font-family: 'Great Vibes', cursive; font-size: 1.25rem; letter-spacing: 0.5px; text-transform: none; font-weight: 400; padding: 2px 16px; }
+.lt-foto { border-radius: 16px; }
+.pago-tarifas-titulo { background: var(--bg-secundario); }
+.dress-code-tipo { font-family: var(--fuente-textos); }
+.foto-item { border-radius: 18px; }
+.ilustracion-asomada { color: var(--petalo); opacity: 0.9; z-index: 1; }
+.btn-musica-flotante { background: rgba(255,255,255,.9); border-color: var(--petalo); }
+
+@media (prefers-reduced-motion: reduce) {
+    .portada-wrapper::before,
+    .portada-wrapper::after { animation: none; display: none; }
+}

@@ -1,0 +1,214 @@
+/* ==========================================================================
+   MOMENTIA - TEMA: VINTAGE
+   Papel envejecido, tinta sepia, dobles filetes y sellos. Bodas retro,
+   aniversarios, reuniones familiares y cumpleaños con espíritu de época.
+
+   Toda la estructura y los componentes viven en base_tarjeta.css; este
+   archivo solo define los tokens del tema y su decoración.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap');
+
+:root {
+    --tinta:         #3a2a1a;
+    --sello:         #8c3b2a;             /* rojo óxido */
+    --mostaza:       #b8862b;
+
+    --gold:          #8c3b2a;
+    --gold-light:    #d9c7a0;
+    --gold-dark:     #6e2b1d;
+    --gold-bg:       rgba(140, 59, 42, 0.06);
+    --gold-border:   rgba(58, 42, 26, 0.45);
+    --on-accent:     #f6ecd6;
+
+    --bg-principal:  #f1e6cc;
+    --bg-secundario: #e6d8b8;
+    --text-dark:     var(--tinta);
+    --text-mid:      #56412b;
+    --text-light:    #7a6548;
+
+    --fuente-titulos: 'Playfair Display SC', Georgia, serif;
+    --fuente-textos:  'Libre Baskerville', Georgia, serif;
+    --titulo-estilo:  normal;
+    --titulo-peso:    700;
+    --titulo-spacing: 1.5px;
+    --eyebrow-spacing: 3px;
+    --eyebrow-size:   0.72rem;
+
+    --radius:         2px;
+    --radius-sm:      2px;
+    --radius-card:    3px;
+    --borde-ancho:    1px;
+
+    --surface-bg:     rgba(250, 243, 224, 0.85);
+    --surface-border: var(--tinta);
+    --surface-shadow: 3px 3px 0 rgba(58, 42, 26, 0.25);
+    --surface-blur:   0px;
+
+    --field-bg:       rgba(255, 250, 235, 0.6);
+    --field-border:   1px solid var(--tinta);
+    --field-border-b: 1px solid var(--tinta);
+    --field-radius:   1px;
+    --field-pad:      10px 12px;
+    --field-focus:    var(--sello);
+
+    --btn-pad:        13px 30px;
+    --btn-size:       0.78rem;
+    --btn-peso:       400;
+    --btn-spacing:    2.2px;
+    --btn-borde:      1.5px;
+    --btn-sombra:     3px 3px 0 var(--tinta);
+    --btn-sombra-hover: 4px 4px 0 var(--tinta);
+    --btn-mueve:      1px;
+
+    --glow-color:     rgba(184, 134, 43, 0.22);
+    --glow-size:      min(90vw, 560px);
+
+    --marco-border:   4px double var(--tinta);
+    --marco-bg:       rgba(250, 243, 224, 0.75);
+    --marco-radius:   2px;
+    --marco-shadow:   6px 6px 0 rgba(58, 42, 26, 0.2);
+}
+
+body { font-weight: 400; line-height: 1.75; }
+
+/* Papel con grano (ruido SVG, sin imágenes externas) */
+body.tema-vintage {
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse at center, transparent 55%, rgba(120, 82, 32, 0.22) 100%);
+    background-attachment: fixed;
+}
+/* Cada módulo con fondo transparente para dejar ver el papel; viñeta arriba y abajo */
+.modulo-fullscreen { background: transparent; }
+.modulo-fullscreen:not(.portada-wrapper)::after {
+    content: '';
+    position: absolute;
+    inset: 0 8% auto 8%;
+    height: 0;
+    border-top: 3px double var(--tinta);
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+/* ── Pantalla de misterio ── */
+.misterio-wrapper { background: var(--bg-principal); background-image: inherit; }
+.misterio-texto { font-family: var(--fuente-titulos); font-weight: 700; letter-spacing: 1px; }
+.misterio-pregunta { font-family: 'Special Elite', monospace; letter-spacing: 1.5px; }
+.btn-misterio {
+    background: transparent;
+    border: 1.5px solid var(--tinta);
+    color: var(--tinta);
+    font-family: 'Special Elite', monospace;
+    font-weight: 400;
+    box-shadow: 3px 3px 0 var(--tinta);
+}
+.btn-misterio:hover { background: var(--sello); color: var(--on-accent); }
+
+/* ── Portada ── */
+.portada-wrapper { background: transparent; }
+.portada-fondo-animado { background: radial-gradient(circle, var(--mostaza) 0%, transparent 68%); opacity: 0.14; animation: none; }
+.portada-marco { outline: 1px solid var(--tinta); outline-offset: 5px; }
+.portada-marco::before,
+.portada-marco::after {
+    content: '\2766';
+    position: absolute;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--sello);
+    background: var(--bg-principal);
+    padding: 0 8px;
+}
+.portada-marco::before { top: -13px; left: 50%; transform: translateX(-50%); }
+.portada-marco::after  { bottom: -13px; left: 50%; transform: translateX(-50%) rotate(180deg); }
+
+.portada-frase { font-style: italic; color: var(--text-mid); font-size: clamp(0.95rem, 4vw, 1.15rem); }
+.portada-linea-decorativa::before,
+.portada-linea-decorativa::after,
+.divisor-decorativo::before,
+.divisor-decorativo::after { height: 3px; background: none; border-top: 1px solid var(--tinta); border-bottom: 1px solid var(--tinta); }
+.portada-linea-decorativa span,
+.divisor-decorativo span { color: var(--sello); }
+.portada-nombre { font-weight: 700; letter-spacing: 1px; text-transform: none; font-size: clamp(2.3rem, 11vw, 4.2rem); }
+.portada-fecha {
+    display: inline-block;
+    font-family: 'Special Elite', monospace;
+    padding: 6px 14px;
+    border: 2px solid var(--sello);
+    color: var(--sello);
+    letter-spacing: 2px;
+    transform: rotate(-2deg);
+    opacity: 0.92;
+}
+.scroll-hint span { font-family: 'Special Elite', monospace; color: var(--text-mid); }
+.scroll-hint .scroll-arrow { border-color: var(--tinta); }
+
+/* ── Componentes ── */
+.eyebrow { font-family: 'Special Elite', monospace; font-weight: 400; color: var(--sello); }
+.modulo-titulo { font-size: clamp(1.6rem, 6.4vw, 2.5rem); }
+.modulo-texto { font-size: 0.92rem; color: var(--text-mid); }
+.icono-modulo { color: var(--sello); }
+.modulo-regalos .icono-modulo { color: var(--sello); }
+
+.btn,
+.btn-accion,
+.rsvp-submit,
+.btn-muro-submit,
+.btn--gold {
+    font-family: 'Special Elite', monospace;
+    background: var(--bg-principal);
+    color: var(--tinta);
+    border-color: var(--tinta);
+}
+.btn:hover,
+.btn-accion:hover,
+.rsvp-submit:hover,
+.btn-muro-submit:hover,
+.btn--gold:hover { background: var(--sello); color: var(--on-accent); border-color: var(--tinta); }
+.btn:active,
+.btn-accion:active,
+.rsvp-submit:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--tinta); }
+.btn--whatsapp { color: #0d6b48; border-color: var(--tinta); }
+.btn--spotify { color: #0f6b30; border-color: var(--tinta); }
+.btn--mp { color: #0b5f8a; border-color: var(--tinta); }
+.btn--secundario { color: var(--text-mid); border-color: var(--text-light); box-shadow: none; }
+.btn--copiar { color: var(--sello); border-color: var(--tinta); }
+.btn--mp-disabled { box-shadow: none; background: transparent; }
+
+.campo-form label,
+.rsvp-field label,
+.pago-field label,
+.pago-file-label { font-family: 'Special Elite', monospace; font-weight: 400; color: var(--text-mid); letter-spacing: 1.5px; }
+.campo-form-opciones label,
+.rsvp-opcion label,
+.rsvp-opcion-item label { font-family: 'Special Elite', monospace; font-weight: 400; border-color: var(--tinta); color: var(--tinta); background: transparent; }
+.campo-form-opciones input:checked + label,
+.rsvp-opcion input:checked + label,
+.rsvp-opcion-item input:checked + label { background: var(--tinta); border-color: var(--tinta); color: var(--bg-principal); }
+
+.lt-contenedor::before { background: repeating-linear-gradient(to bottom, var(--tinta) 0 6px, transparent 6px 11px); width: 2px; }
+.mod-linea-tiempo.horizontal .lt-contenedor::before { background: repeating-linear-gradient(to right, var(--tinta) 0 6px, transparent 6px 11px); height: 2px; }
+.lt-punto { border: 2px solid var(--tinta); background: var(--sello); box-shadow: none; border-radius: 2px; transform: rotate(45deg); }
+.mod-linea-tiempo.horizontal .lt-punto { transform: translateX(-50%) rotate(45deg); }
+.lt-fecha { font-family: 'Special Elite', monospace; font-weight: 400; border-radius: 2px; border-color: var(--sello); color: var(--sello); background: transparent; }
+.lt-foto img,
+.foto-item img { filter: sepia(0.55) contrast(0.95) saturate(0.85); }
+.lt-foto { border: 1px solid var(--tinta); border-radius: 1px; padding: 5px; background: #fbf5e4; }
+.lt-item-titulo { font-family: var(--fuente-titulos); font-weight: 700; letter-spacing: 0.5px; }
+.lt-nav-btn { border-radius: 2px; border-color: var(--tinta); color: var(--tinta); background: var(--bg-principal); box-shadow: 2px 2px 0 var(--tinta); }
+.lt-nav-btn:hover:not(:disabled) { background: var(--sello); color: var(--on-accent); }
+
+.dress-code-tipo { font-family: 'Special Elite', monospace; font-weight: 400; color: var(--sello); }
+.dress-code-texto p { font-style: italic; font-family: var(--fuente-textos); font-size: clamp(1rem, 4.2vw, 1.25rem); }
+.pago-tarifas-titulo { font-family: 'Special Elite', monospace; font-weight: 400; background: var(--bg-secundario); color: var(--tinta); }
+.pago-tarifa-monto { font-family: 'Special Elite', monospace; font-style: normal; font-weight: 400; }
+.pago-banco-bloque { border-style: dashed; border-color: var(--tinta); }
+.muro-item strong { font-family: var(--fuente-titulos); font-style: normal; }
+.estado-titulo,
+.mod-rsvp-interno .rsvp-mensaje-exito h4 { font-family: var(--fuente-titulos); color: var(--sello); font-weight: 700; }
+.foto-item { border: 1px solid var(--tinta); border-radius: 1px; padding: 4px; background: #fbf5e4; }
+.foto-item img { border-radius: 0; }
+.galeria-grid { gap: 10px; }
+.ilustracion-asomada { color: var(--sello); opacity: 0.75; z-index: 1; }
+.btn-musica-flotante { background: var(--bg-principal); border: 1.5px solid var(--tinta); border-radius: 50%; color: var(--sello); box-shadow: 3px 3px 0 var(--tinta); }
+.btn-musica-flotante:hover { background: var(--sello); color: var(--on-accent); }

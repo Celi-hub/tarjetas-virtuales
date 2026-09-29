@@ -2,6 +2,8 @@
 /** @var array $tarjeta */
 /** @var array $t */
 
+require_once __DIR__ . '/../../helpers/svg_helpers.php';
+
 if (empty($tarjeta['mod_compartir_fotos']) || empty($tarjeta['link_galeria_externa'])) return;
 
 $txt_titulo = $t['titulo_galeria'] ?? 'Galería Colaborativa';
@@ -9,36 +11,17 @@ $txt_texto  = $t['texto_galeria']  ?? '¡Queremos ver el evento a través de tus
 $txt_btn    = $t['btn_galeria']    ?? 'Ver y subir fotos';
 ?>
 <section class="modulo-fullscreen modulo-compartir-fotos">
-    <div class="modulo-contenido tarjeta-con-personaje">   
-             
-            <!-- Imagen decorativa que asoma si es svg -->
-            <div class="ilustracion-asomada">
-                <?php 
-                    $ruta_deco = __DIR__ . '/../../img/trescorazones.svg'; 
+    <div class="modulo-contenido">
 
-                    if (file_exists($ruta_deco)) {
-                        echo file_get_contents($ruta_deco); 
-                    } else {
-                        echo '<!-- Decoración no encontrada -->';
-                    }
-                ?>
-            </div>
+        <!-- Decoración que asoma en la esquina (color y tamaño los define el tema) -->
+        <div class="ilustracion-asomada" aria-hidden="true">
+            <?php momentia_render_icono_modulo('trescorazones.svg', ''); ?>
+        </div>
 
-            <!-- Imagen decorativa que asoma si fuese png p jpg 
-            <img src="img/trescorazones.svg" class="ilustracion-asomada" alt="Deco corazones"> -->
-            
-            <div class="icono-modulo">
-                <?php 
-                    $ruta_icono = __DIR__ . '/../../img/img_modulos/fotos.svg'; 
+        <div class="icono-modulo">
+            <?php momentia_render_icono_modulo('fotos.svg'); ?>
+        </div>
 
-                    if (file_exists($ruta_icono)) {
-                        echo file_get_contents($ruta_icono); 
-                    } else {
-                        echo '<!-- Icono no encontrado -->';
-                    }
-                ?>
-            </div>
-        
         <h3 class="modulo-titulo"><?php echo htmlspecialchars($txt_titulo); ?></h3>
         <p class="modulo-texto"><?php echo htmlspecialchars($txt_texto); ?></p>
 

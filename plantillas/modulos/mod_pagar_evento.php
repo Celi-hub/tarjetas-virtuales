@@ -46,10 +46,10 @@ $form_id = 'form_pago_' . $id_tarjeta;
             <?php if (!empty($tarifas)): ?>
                 <div class="pago-tarifas">
                     <span class="pago-tarifas-titulo">Valores</span>
-                    <?php foreach ($tarifas as $t): ?>
+                    <?php foreach ($tarifas as $tarifa): ?>
                         <div class="pago-tarifa-item">
-                            <span class="pago-tarifa-nombre"><?php echo htmlspecialchars($t['nombre']); ?></span>
-                            <span class="pago-tarifa-monto">$<?php echo number_format($t['monto'], 0, ',', '.'); ?></span>
+                            <span class="pago-tarifa-nombre"><?php echo htmlspecialchars($tarifa['nombre']); ?></span>
+                            <span class="pago-tarifa-monto">$<?php echo number_format($tarifa['monto'], 0, ',', '.'); ?></span>
                         </div>
                     <?php endforeach; ?>
                 </div>
