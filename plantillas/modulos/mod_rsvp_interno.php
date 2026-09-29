@@ -3,7 +3,7 @@ if (!isset($tarjeta) || empty($tarjeta)) return;
 $form_id = 'r' . ($tarjeta['id_tarjeta'] ?? 0);
 ?>
 
-<section class="modulo-fullscreen">
+<section class="modulo-fullscreen modulo-rsvp-interno">
     <div class="modulo-contenido">
         <div class="mod-rsvp-interno" id="mod-<?= $form_id ?>">
             <div id="form-cont-<?= $form_id ?>">
@@ -40,7 +40,7 @@ $form_id = 'r' . ($tarjeta['id_tarjeta'] ?? 0);
                         <div id="bloque_acompanantes_<?= $form_id ?>" style="display:none;">
                             <div class="rsvp-field">
                                 <label>¿Venís acompañado?</label>
-                                <small style="display:block; color:#7a6e67; margin-bottom:8px; line-height:1.2;">Asegurate de que tus acompañantes estén previstos por el organizador.</small>
+                                <small class="rsvp-ayuda">Asegurate de que tus acompañantes estén previstos por el organizador.</small>
                                 <select id="tiene_acomp_<?= $form_id ?>">
                                     <option value="" selected disabled>Seleccioná una opción...</option>
                                     <option value="no">No, voy solo/a</option>

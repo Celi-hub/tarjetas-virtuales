@@ -18,9 +18,12 @@ if (!function_exists('momentia_render_icono_modulo')) {
      * Imprime el contenido saneado de un SVG ubicado en /img/img_modulos/.
      *
      * @param string $nombre_archivo Ej: 'ubicacion.svg', 'calendario.svg'
+     * @param string $carpeta        Subcarpeta de /img/ (por defecto 'img_modulos'; '' para la raíz)
      */
-    function momentia_render_icono_modulo(string $nombre_archivo): void {
-        $ruta = __DIR__ . '/../img/img_modulos/' . $nombre_archivo;
+    function momentia_render_icono_modulo(string $nombre_archivo, string $carpeta = 'img_modulos'): void {
+        $nombre_archivo = basename($nombre_archivo);
+        $carpeta        = $carpeta === '' ? '' : basename($carpeta) . '/';
+        $ruta = __DIR__ . '/../img/' . $carpeta . $nombre_archivo;
 
         if (!file_exists($ruta)) {
             echo '<!-- Ícono no encontrado: ' . htmlspecialchars($nombre_archivo) . ' -->';
@@ -29,9 +32,11 @@ if (!function_exists('momentia_render_icono_modulo')) {
 
         $svg = file_get_contents($ruta);
 
-        // 1. Normalización de codificación y remoción de cabecera XML
+        // 1. Normalización de codificación y remoción de cabecera XML / DOCTYPE / comentarios
         $svg = mb_convert_encoding($svg, 'UTF-8', 'UTF-16, UTF-8');
         $svg = preg_replace('/<\?xml.*?\?>/i', '', $svg);
+        $svg = preg_replace('/<!DOCTYPE[^>]*>/i', '', $svg);
+        $svg = preg_replace('/<!--.*?-->/s', '', $svg);
 
         // 2. Eliminación del bloque <style> interno exportado por Corel
         $svg = preg_replace('/<style\b[^>]*>.*?<\/style>/is', '', $svg);

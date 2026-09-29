@@ -1,0 +1,231 @@
+/* ==========================================================================
+   MOMENTIA - TEMA: MINIMALISTA
+   Blanco, tinta negra, líneas finas y un único acento. Tipografía grande,
+   mucho aire y cero adornos. Eventos corporativos, inauguraciones,
+   premiaciones o cualquiera que prefiera lo esencial.
+
+   Toda la estructura y los componentes viven en base_tarjeta.css; este
+   archivo solo define los tokens del tema y su decoración.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --acento:        #ff4d2e;             /* único toque de color: puntos, foco y detalles */
+
+    --gold:          #111111;
+    --gold-light:    #d4d4d4;
+    --gold-dark:     #111111;
+    --gold-bg:       rgba(17, 17, 17, 0.035);
+    --gold-border:   #e2e2e2;
+    --on-accent:     #ffffff;
+
+    --bg-principal:  #ffffff;
+    --bg-secundario: #f4f4f4;
+    --text-dark:     #111111;
+    --text-mid:      #4a4a4a;
+    --text-light:    #757575;
+
+    --fuente-titulos: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --fuente-textos:  'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --titulo-estilo:  normal;
+    --titulo-peso:    300;
+    --titulo-spacing: -0.03em;
+    --eyebrow-spacing: 2.5px;
+    --eyebrow-size:   0.7rem;
+
+    --radius:         0;
+    --radius-sm:      0;
+    --radius-card:    0;
+
+    --surface-bg:     #ffffff;
+    --surface-border: #e2e2e2;
+    --surface-shadow: none;
+    --surface-blur:   0px;
+    --surface-pad:    24px;
+
+    --field-bg:       transparent;
+    --field-border:   0 solid transparent;
+    --field-border-b: 1px solid #bdbdbd;
+    --field-radius:   0;
+    --field-pad:      10px 0;
+    --field-focus:    #111111;
+
+    --btn-pad:        14px 32px;
+    --btn-size:       0.72rem;
+    --btn-peso:       600;
+    --btn-spacing:    2px;
+
+    --glow-color:     transparent;
+
+    --marco-border:   0 solid transparent;
+    --marco-bg:       transparent;
+    --marco-radius:   0;
+    --marco-shadow:   none;
+
+    --animacion-suave: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    --transicion:      0.2s ease;
+}
+
+body { font-weight: 400; }
+
+/* ── Módulos separados por una línea, sin fondos ni luces ── */
+.modulo-fullscreen:not(.portada-wrapper)::after {
+    content: '';
+    position: absolute;
+    inset: 0 clamp(16px, 5vw, 24px) auto;
+    height: 1px;
+    background: #e2e2e2;
+}
+
+/* ── Pantalla de misterio ── */
+.misterio-texto { font-weight: 300; letter-spacing: -0.03em; font-size: clamp(2.2rem, 9vw, 3.2rem); }
+.btn-misterio { border-color: #111; color: #111; font-weight: 600; }
+.btn-misterio:hover { background: #111; color: #fff; }
+
+/* ── Portada: solo tipografía ── */
+.portada-wrapper { text-align: left; }
+.portada-fondo-animado { display: none; }
+.portada-marco { padding-inline: 0; max-width: 520px; }
+.portada-contenido { align-items: flex-start; text-align: left; }
+.portada-frase {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-style: normal;
+    color: var(--text-light);
+    margin-bottom: 18px;
+}
+.portada-frase::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 10px;
+    border-radius: 50%;
+    background: var(--acento);
+}
+.portada-linea-decorativa { display: none; }
+.portada-nombre {
+    font-size: clamp(3rem, 15vw, 5.6rem);
+    font-weight: 300;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    margin-bottom: 26px;
+}
+.portada-fecha-wrap { border-top: 1px solid #111; padding-top: 14px; width: 100%; text-align: left; }
+.portada-fecha { font-size: 0.78rem; font-weight: 600; letter-spacing: 3px; color: #111; }
+.portada-scroll-hint { left: clamp(16px, 5vw, 24px); transform: none; align-items: flex-start; }
+.portada-scroll-hint.anim-escalonada { transform: translateY(20px); }
+.portada-wrapper.iniciar-magia .portada-scroll-hint.anim-escalonada { animation-name: entrarSuave; }
+.scroll-hint span { color: var(--text-light); font-size: 0.7rem; font-weight: 600; letter-spacing: 3px; }
+.scroll-hint .scroll-arrow { border-color: #111; }
+@media (min-width: 560px) {
+    .portada-scroll-hint { left: 50%; transform: translateX(-50%); }
+    .portada-scroll-hint.anim-escalonada { transform: translate(-50%, 20px); }
+    .portada-wrapper.iniciar-magia .portada-scroll-hint.anim-escalonada { animation-name: entrarScrollHint; }
+}
+
+/* ── Componentes ── */
+.modulo-titulo { font-weight: 300; font-size: clamp(2rem, 8.5vw, 3.2rem); }
+.modulo-texto { color: var(--text-mid); }
+.eyebrow { color: var(--text-dark); font-weight: 600; }
+.eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 9px;
+    border-radius: 50%;
+    background: var(--acento);
+    vertical-align: 1px;
+}
+.icono-modulo { width: 48px; height: 48px; color: #111; }
+.modulo-regalos .icono-modulo,
+.modulo-playlist .icono-modulo { width: 60px; height: 60px; color: #111; }
+.divisor-decorativo span { color: var(--acento); }
+.portada-linea-decorativa span { color: var(--acento); }
+.divisor-decorativo::before,
+.divisor-decorativo::after { background: #e2e2e2; }
+
+/* Botones: negro sólido, invertidos al pasar */
+.btn,
+.btn-accion,
+.rsvp-submit,
+.btn-muro-submit,
+.btn--gold { background: #111; color: #fff; border-color: #111; }
+.btn svg,
+.btn-accion svg { stroke: #fff; }
+.btn:hover,
+.btn-accion:hover,
+.rsvp-submit:hover,
+.btn-muro-submit:hover,
+.btn--gold:hover { background: #fff; color: #111; }
+.btn:hover svg,
+.btn-accion:hover svg,
+.btn--gold:hover svg { stroke: #111; }
+.btn--whatsapp { background: #fff; color: #0d6b48; border-color: #0d6b48; }
+.btn--whatsapp svg { fill: currentColor; stroke: none; }
+.btn--whatsapp:hover { background: #0d6b48; color: #fff; }
+.btn--spotify { background: #fff; color: #0f6b30; border-color: #0f6b30; }
+.btn--spotify:hover { background: #0f6b30; color: #fff; }
+.btn--mp { background: #fff; color: #0b5f8a; border-color: #0b5f8a; }
+.btn--mp:hover { background: #0b5f8a; color: #fff; }
+.btn--secundario { background: #fff; color: #111; border-color: #bdbdbd; }
+.btn--secundario:hover { background: #f4f4f4; border-color: #111; }
+.btn--copiar { background: #fff; color: #111; border-color: #111; }
+.btn--copiar:hover { background: #111; color: #fff; }
+.btn--copiar:hover svg { fill: #fff; }
+.btn--mp-disabled { background: transparent; color: var(--text-light); border-color: #e2e2e2; }
+
+.campo-form label,
+.rsvp-field label,
+.pago-field label,
+.pago-file-label { color: #111; font-weight: 600; }
+.campo-form input:focus,
+.campo-form textarea:focus,
+.campo-form select:focus,
+.rsvp-field input:focus,
+.rsvp-field textarea:focus,
+.rsvp-field select:focus { border-color: #111; box-shadow: 0 1px 0 #111; }
+.campo-form select,
+.rsvp-field select { background-image: linear-gradient(45deg, transparent 50%, #111 50%), linear-gradient(135deg, #111 50%, transparent 50%); }
+
+.campo-form-opciones label,
+.rsvp-opcion label,
+.rsvp-opcion-item label { border-color: #bdbdbd; color: #111; font-weight: 600; background: #fff; }
+.campo-form-opciones input:checked + label,
+.rsvp-opcion input:checked + label,
+.rsvp-opcion-item input:checked + label { background: #111; border-color: #111; color: #fff; }
+
+.lt-contenedor::before { width: 1px; background: #111; }
+.mod-linea-tiempo.horizontal .lt-contenedor::before { height: 1px; background: #111; }
+.lt-punto { border: 1px solid #111; background: var(--acento); box-shadow: none; width: 11px; height: 11px; left: -29px; }
+.mod-linea-tiempo.horizontal .lt-punto { left: 50%; }
+.lt-fecha { border-radius: 0; border: 0; padding: 0; background: none; color: var(--acento); font-weight: 700; }
+.lt-foto { border-radius: 0; }
+.lt-foto img { filter: grayscale(1) contrast(1.05); transition: filter var(--animacion-suave), transform 0.7s var(--animacion-suave); }
+.foto-item img { filter: grayscale(1) contrast(1.05); transition: filter 0.4s ease, transform 0.5s ease; }
+@media (hover: hover) {
+    .lt-item:hover .lt-foto img,
+    .foto-item:hover img { filter: grayscale(0); }
+}
+.lt-item-titulo { font-weight: 600; letter-spacing: -0.02em; }
+.lt-nav-btn { border-color: #111; color: #111; background: #fff; }
+.lt-nav-btn:hover:not(:disabled) { background: #111; color: #fff; }
+
+.dress-code-tipo { color: var(--acento); }
+.dress-code-texto p { font-weight: 300; font-size: clamp(1.2rem, 5vw, 1.7rem); letter-spacing: -0.02em; }
+.pago-tarifas-titulo { background: #f4f4f4; }
+.pago-tarifa-monto { font-style: normal; font-weight: 600; }
+.pago-banco-bloque { background: #f9f9f9; }
+.rsvp-fecha-limite { background: #f4f4f4; border-color: #e2e2e2; }
+.muro-item strong { font-weight: 600; letter-spacing: -0.01em; }
+.estado-titulo,
+.mod-rsvp-interno .rsvp-mensaje-exito h4 { color: #111; font-weight: 600; letter-spacing: -0.02em; }
+.foto-item { border-radius: 0; }
+.galeria-grid { gap: 4px; }
+.ilustracion-asomada { color: var(--acento); opacity: 0.9; z-index: 1; }
+.btn-musica-flotante { background: #111; border-color: #111; color: #fff; box-shadow: none; }
+.btn-musica-flotante:hover { background: #fff; color: #111; }

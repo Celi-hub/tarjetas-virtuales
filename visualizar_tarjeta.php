@@ -40,19 +40,32 @@ if (!empty($tarjeta['textos_personalizados'])) {
         $t = array_merge($t, $textos_personalizados);
     }
 }
+
+// Nombre de estilo (BD) -> slug seguro para archivo CSS/clase ("romántico" -> "romantico").
+// Solo se aceptan estilos que tengan su hoja en css/; si no, se usa Elegante.
+$slug_estilo = strtr(mb_strtolower($tarjeta['nombre_estilo'], 'UTF-8'), [
+    'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'ü' => 'u', 'ñ' => 'n',
+]);
+$slug_estilo = preg_replace('/[^a-z0-9_-]/', '', $slug_estilo);
+if ($slug_estilo === '' || !is_file(__DIR__ . "/css/{$slug_estilo}.css")) {
+    $slug_estilo = 'elegante';
+}
+// Estilos con efecto de confeti al desbloquear la tarjeta
+$estilos_con_confeti = ['divertido', 'infantil'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title><?php echo htmlspecialchars($tarjeta['nombres_portada'] ?? 'Invitación'); ?></title>
     <link rel="stylesheet" href="css/base_tarjeta.css">
-    <link rel="stylesheet" href="css/<?php echo htmlspecialchars($tarjeta['nombre_estilo']); ?>.css">
-    <?php if ($tarjeta['nombre_estilo'] === 'divertido'): ?>
-        <script src="js/divertido-efectos.js" defer></script>
+    <link rel="stylesheet" href="css/<?php echo $slug_estilo; ?>.css">
+    <?php if (in_array($slug_estilo, $estilos_con_confeti, true)): ?>
+        <script src="js/confeti.js" defer></script>
     <?php endif; ?>
 </head>
-<body>
+<body class="tema-<?php echo $slug_estilo; ?>">
 <?php
 include 'plantillas/modulos/base_portada.php';
 

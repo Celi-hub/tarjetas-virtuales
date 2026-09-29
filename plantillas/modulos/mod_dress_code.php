@@ -21,7 +21,7 @@ $titulo_dress = trim($tarjeta['dress_code_titulo'] ?? $tarjeta['dress_code_tipo'
 
         <div class="dress-code-texto caja-vidrio caja-vidrio--centrada">
             <?php if (!empty($titulo_dress)): ?>
-                <h4 class="dress-code-tipo" style="font-size: 1.15rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; color: var(--party-purple, inherit);">
+                <h4 class="dress-code-tipo">
                     <?php echo htmlspecialchars($titulo_dress); ?>
                 </h4>
             <?php endif; ?>

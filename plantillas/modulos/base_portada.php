@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }, { threshold: 0.12 });
 
-    document.querySelectorAll('.modulo-fullscreen:not(:first-child)').forEach(el => {
+    document.querySelectorAll('.modulo-fullscreen:not(#portada-principal)').forEach(el => {
         el.classList.add('reveal');
         observer.observe(el);
     });

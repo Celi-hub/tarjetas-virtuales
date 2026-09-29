@@ -15,7 +15,8 @@ La arquitectura de Momentia permite escalar las funcionalidades de la invitació
    ```php
    if (empty($tarjeta['mod_[nombre]'])) return;
    ```
-5. **Aislamiento de Assets:** Cualquier script (`<script>`) o estilo (`<style>`) específico del módulo debe estar autocontenido en el archivo del módulo o registrado en la clase de estilo visual general para evitar contaminación global.
+5. **Assets:** los `<script>` propios del módulo van autocontenidos en el archivo del módulo. Los **estilos NO**: van en `css/base_tarjeta.css` (sección 6) usando tokens, para que los 6 temas los hereden. Prohibido `<style>` y `style=""` en `mod_*.php`.
+6. **Variables:** no reasignar `$t` (textos) ni `$tarjeta` dentro de un módulo; usar nombres propios en los `foreach`.
 
 ## Helpers Compartidos entre Módulos
 Cuando dos o más módulos necesitan la misma lógica de PHP (ej. cargar y sanear un ícono SVG), esa lógica **no se declara dentro del `mod_[nombre].php`**. Se extrae a un archivo en `helpers/` y se incluye con `require_once` desde cada módulo que la necesite.
@@ -25,4 +26,4 @@ Cuando dos o más módulos necesitan la misma lógica de PHP (ej. cargar y sanea
 - **Convención de nombres:** toda función de un helper compartido lleva el prefijo `momentia_` para evitar colisiones con nombres de otras partes del sistema.
 
 **Helpers existentes:**
-- `helpers/svg_helpers.php` → `momentia_render_icono_modulo(string $nombre_archivo)`: carga un SVG desde `img/img_modulos/`, le quita encabezado XML, bloque `<style>` (típico de exportaciones de Corel), y atributos `fill`/`class` propios, para que el color lo controle el CSS del tema activo vía `currentColor`. Usado por `mod_ubi_calen.php`; cualquier módulo nuevo que cargue íconos de archivo debe reutilizarlo.
+- `helpers/svg_helpers.php` → `momentia_render_icono_modulo(string $nombre_archivo, string $carpeta = 'img_modulos')`: carga un SVG desde `img/{carpeta}/` (`''` = raíz de `img/`), le quita encabezado XML, bloque `<style>` (típico de exportaciones de Corel), y atributos `fill`/`class` propios, para que el color lo controle el CSS del tema activo vía `currentColor`. Usado por `mod_ubi_calen.php`; cualquier módulo nuevo que cargue íconos de archivo debe reutilizarlo.

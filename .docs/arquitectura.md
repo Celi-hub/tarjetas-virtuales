@@ -19,5 +19,6 @@ La instanciación de un nuevo producto se da en pasos para optimizar la UX:
 ## Motor de Renderizado Visual (`visualizar_tarjeta.php`)
 - Reconstruye la interfaz iterando sobre configuraciones en BD.
 - Carga el diseño de base (`plantillas/modulos/base_portada.php`).
-- Carga primero el esqueleto visual compartido (`css/base_tarjeta.css`) y luego la máscara del estilo elegido (`css/{nombre_estilo}.css`) para evitar duplicación de reglas estructurales entre temas.
+- Carga primero el núcleo (`css/base_tarjeta.css`: estructura, componentes y módulos gobernados por tokens) y luego el tema elegido (`css/{slug}.css`: tokens + decoración). Detalle en [estilos.md](estilos.md).
+- El `<body>` recibe `class="tema-{slug}"`; el nombre del estilo se normaliza a slug sin tildes y cae a `elegante` si no existe la hoja.
 - **Inclusión Condicional:** Un loop atraviesa las `plantillas_activas($tarjeta)` incluyendo dinámicamente los scripts `mod_*.php` contenidos en la carpeta `plantillas/modulos/`.

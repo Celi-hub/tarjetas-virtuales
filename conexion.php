@@ -16,7 +16,15 @@ $es_local = (
     $server_name === 'localhost'
 );
 
-if ($es_local) {
+if (getenv('DB_HOST')) {
+    // Entorno explícito (Docker, CI, hosting con variables): manda la configuración por variables.
+    // El detalle de errores solo se muestra si APP_ENV=development.
+    $host     = getenv('DB_HOST');
+    $db       = getenv('DB_NAME') ?: 'tarjeta_virtual';
+    $user     = getenv('DB_USER') ?: 'root';
+    $pass     = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
+    $es_local = getenv('APP_ENV') === 'development';
+} elseif ($es_local) {
     $host = 'localhost';
     $db   = 'tarjeta_virtual';
     $user = 'root';

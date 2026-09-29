@@ -59,6 +59,8 @@ if (isset($_GET['exportar']) && $tarjeta_id > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Playlist - Emociones Digitales</title>
+    <!-- El panel usa el botón .btn-exportar y los tokens de color de la librería de componentes -->
+    <link rel="stylesheet" href="css/base_tarjeta.css">
     <link rel="stylesheet" href="css/elegante.css">
     <link rel="stylesheet" href="css/formularios.css">
 </head>

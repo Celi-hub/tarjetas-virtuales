@@ -25,3 +25,5 @@ Tú (el agente IA) eres responsable de mantener esta documentación viva y sincr
 - 📄 **[Arquitectura y Flujos](.docs/arquitectura.md)**: Si necesitas modificar el flujo de autenticación, el wizard de creación o el motor de renderizado.
 - 📄 **[Base de Datos](.docs/base_datos.md)**: Si necesitas modificar el esquema relacional o alterar consultas SQL.
 - 📄 **[Sistema de Módulos](.docs/modulos.md)**: Si necesitas crear, editar o eliminar fragmentos interactivos de la tarjeta (RSVP, Muro, Regalos, etc.).
+- 📄 **[Estilos Visuales](.docs/estilos.md)**: Si necesitas crear o modificar un tema (`css/{estilo}.css`) o tocar `css/base_tarjeta.css`.
+- 📄 **[Entorno Docker](.docs/entorno_docker.md)**: Si necesitas levantar la app y la BD localmente o cambiar la configuración de conexión.

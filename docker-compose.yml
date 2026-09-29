@@ -1,0 +1,56 @@
+# Momentia — entorno completo: app (PHP/Apache) + base de datos (MariaDB 10.4, la misma versión que XAMPP)
+#
+#   docker compose up -d --build                  -> http://localhost:8080
+#   docker compose --profile tools up -d          -> además phpMyAdmin en http://localhost:8081
+#   docker compose down                           -> apaga y conserva los datos (volumen db_data)
+#   docker compose down -v                        -> apaga y BORRA la BD (se recrea desde tarjeta_virtual.sql al volver a levantar)
+#
+# Los valores se pueden sobrescribir con un archivo .env junto a este compose.
+services:
+  web:
+    build: .
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    environment:
+      APP_ENV: development
+      DB_HOST: db
+      DB_NAME: ${DB_NAME:-tarjeta_virtual}
+      DB_USER: ${DB_USER:-momentia}
+      DB_PASS: ${DB_PASS:-momentia_dev}
+    volumes:
+      # Código en vivo: editás en tu carpeta y se ve al recargar
+      - .:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mariadb:10.4
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASS:-root_dev}
+      MARIADB_DATABASE: ${DB_NAME:-tarjeta_virtual}
+      MARIADB_USER: ${DB_USER:-momentia}
+      MARIADB_PASSWORD: ${DB_PASS:-momentia_dev}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    volumes:
+      - db_data:/var/lib/mysql
+      # Dump oficial del proyecto: se importa SOLO la primera vez (volumen vacío)
+      - ./tarjeta_virtual.sql:/docker-entrypoint-initdb.d/01_tarjeta_virtual.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    profiles: ["tools"]
+    environment:
+      PMA_HOST: db
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
