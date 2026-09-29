@@ -7,10 +7,13 @@
 // desde el panel de control o en un archivo .env (ver abajo).
 // En local (XAMPP) no hace falta: detectamos el entorno automáticamente.
 
+$http_host   = $_SERVER['HTTP_HOST'] ?? '';
+$server_name = $_SERVER['SERVER_NAME'] ?? '';
 $es_local = (
-    $_SERVER['HTTP_HOST'] === 'localhost' ||
-    strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false ||
-    $_SERVER['SERVER_NAME'] === 'localhost'
+    $http_host === 'localhost' ||
+    strpos($http_host, 'localhost:') === 0 ||
+    strpos($http_host, '127.0.0.1') !== false ||
+    $server_name === 'localhost'
 );
 
 if ($es_local) {

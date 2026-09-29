@@ -4,14 +4,7 @@ require_once __DIR__ . '/config/modulos.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-$posted_token = $_POST['csrf_token'] ?? '';
-$session_token = $_SESSION['csrf_token_editar_tarjeta'] ?? ''; }
-if (!is_string($posted_token) || !is_string($session_token) || !hash_equals($session_token, $posted_token)) {
-    // Invalid CSRF token
-    header('Location: editar_tarjeta.php?id=' . urlencode($_POST['id_tarjeta'] ?? '') . '&error=error_csrf');
-    exit;
 }
-unset($_SESSION['csrf_token_editar_tarjeta']);
 
 if (!isset($_SESSION['id_usuario'])) {
     header("Location: login.php");
@@ -22,6 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: dashboard.php');
     exit;
 }
+
+$posted_token  = $_POST['csrf_token'] ?? '';
+$session_token = $_SESSION['csrf_token_editar_tarjeta'] ?? '';
+if (!is_string($posted_token) || !is_string($session_token) || !hash_equals($session_token, $posted_token)) {
+    // Invalid CSRF token
+    header('Location: editar_tarjeta.php?id=' . (int)($_POST['id_tarjeta'] ?? 0) . '&error=error_csrf');
+    exit;
+}
+unset($_SESSION['csrf_token_editar_tarjeta']);
 
 $id_usuario = $_SESSION['id_usuario'];
 $id_tarjeta = (int)($_POST['id_tarjeta'] ?? 0);

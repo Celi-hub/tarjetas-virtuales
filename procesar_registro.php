@@ -1,8 +1,4 @@
 <?php
-// Activamos errores para ver qué pasa
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 require_once __DIR__ . '/conexion.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -13,6 +9,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tel      = $_POST['telefono'] ?? '';
     $email    = $_POST['email'] ?? '';
     $pass     = $_POST['password'] ?? '';
+
+    $nombre = trim($nombre);
+    $apellido = trim($apellido);
+    $email = trim($email);
+    if ($nombre === '' || $apellido === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($pass) < 8) {
+        die("<p style='color:red;font-family:sans-serif;'>Datos inválidos. Revisá el formulario (contraseña de al menos 8 caracteres). <a href='registro.php'>Volver</a></p>");
+    }
    
  try {
         // PASO A: Verificar si el email ya existe (Consulta de Lectura)
@@ -22,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Si el fetch devuelve algo, es que ya existe
             die("<div style='color:red; font-family:sans-serif;'>
                     <h3>¡Atención!</h3>
-                    <p>El email <strong>$email</strong> ya está registrado. 
+                    <p>El email <strong>" . htmlspecialchars($email) . "</strong> ya está registrado. 
                     <a href='registro.php'>Intentar con otro</a> o <a href='login.php'>Iniciar Sesión</a>.</p>
                  </div>");
         }
@@ -47,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      //   echo "¡Excelente $nombre registro exitoso! <a href='index.php'>Volver al catálogo de plantillas</a>";
 
      echo "<div style='color:green; font-family:sans-serif;'>
-                <h3>¡Bienvenido/a, $nombre!</h3>
+                <h3>¡Bienvenido/a, " . htmlspecialchars($nombre) . "!</h3>
                 <p>Tu registro se completó con éxito.</p>
                 <a href='index.php'>Ver catálogo de tarjetas</a>
               </div>";

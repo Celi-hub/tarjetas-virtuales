@@ -36,8 +36,26 @@ if (!in_array($ext, $allowed_ext)) {
     exit;
 }
 
+$mime = (new finfo(FILEINFO_MIME_TYPE))->file($_FILES['comprobante']['tmp_name']);
+if (!in_array($mime, ['image/jpeg', 'image/png', 'application/pdf'], true)) {
+    echo json_encode(['success' => false, 'message' => 'El archivo no es una imagen o PDF válido.']);
+    exit;
+}
+
 $filename = 'pago_' . $tarjeta_id . '_' . time() . '_' . uniqid() . '.' . $ext;
 $target_file = $upload_dir . $filename;
+
+try {
+    $chk = $pdo->prepare("SELECT 1 FROM tarjetas WHERE id_tarjeta = ?");
+    $chk->execute([$tarjeta_id]);
+    if (!$chk->fetchColumn()) {
+        echo json_encode(['success' => false, 'message' => 'Tarjeta no válida.']);
+        exit;
+    }
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'message' => 'Error de base de datos.']);
+    exit;
+}
 
 if (move_uploaded_file($_FILES['comprobante']['tmp_name'], $target_file)) {
     try {
