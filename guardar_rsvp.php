@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 require_once __DIR__ . '/conexion.php';
 
 header('Content-Type: application/json');
@@ -10,12 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $tarjeta_id = intval($_POST['tarjeta_id'] ?? 0);
-$estado = $_POST['estado'] ?? '';
+$estado = is_string($_POST['estado'] ?? '') ? $_POST['estado'] : '';
 $nombre = trim($_POST['nombre'] ?? '');
 $telefono = trim($_POST['telefono'] ?? '');
-$acompanantes = intval($_POST['acompanantes'] ?? 0);
+$acompanantes = max(0, min(50, intval($_POST['acompanantes'] ?? 0)));
 $mensaje = trim($_POST['mensaje'] ?? '');
-$nombres_acompanantes = $_POST['nombres_acompanantes'] ?? [];
+$nombres_acompanantes = is_array($_POST['nombres_acompanantes'] ?? null) ? $_POST['nombres_acompanantes'] : [];
 
 // Eliminamos el campo email de las validaciones y variables
 if (empty($estado) || empty($nombre) || $tarjeta_id <= 0) {
@@ -37,6 +36,13 @@ if ($estado === 'ausente') {
 
 try {
     // Iniciamos la transacción
+    $chk = $pdo->prepare("SELECT 1 FROM tarjetas WHERE id_tarjeta = ?");
+    $chk->execute([$tarjeta_id]);
+    if (!$chk->fetchColumn()) {
+        echo json_encode(['success' => false, 'message' => 'Tarjeta no válida']);
+        exit;
+    }
+
     $pdo->beginTransaction();
 
     // 1. Insertamos al titular (omitimos la columna email que ahora queda NULL)
@@ -59,6 +65,7 @@ try {
         ");
         
         foreach ($nombres_acompanantes as $nombre_acomp) {
+            if (!is_string($nombre_acomp)) continue;
             $nombre_acomp = trim($nombre_acomp);
             if (!empty($nombre_acomp)) {
                 $stmtAcomp->execute([$id_rsvp, $nombre_acomp]);
@@ -72,6 +79,9 @@ try {
 
 } catch (PDOException $e) {
     // Si hay algún error, revertimos todos los cambios
-    $pdo->rollBack();
-    echo json_encode(['success' => false, 'message' => 'Error BD: ' . $e->getMessage()]);
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    error_log('Error en guardar_rsvp: ' . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'Error interno. Intentá nuevamente.']);
 }

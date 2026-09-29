@@ -10,8 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $tarjeta_id = isset($_POST['tarjeta_id']) ? (int)$_POST['tarjeta_id'] : 0;
-$nombre = isset($_POST['nombre']) ? trim(strip_tags($_POST['nombre'])) : '';
-$mensaje = isset($_POST['mensaje']) ? trim(strip_tags($_POST['mensaje'])) : '';
+$nombre = isset($_POST['nombre']) ? trim(strip_tags((string)$_POST['nombre'])) : '';
+$mensaje = isset($_POST['mensaje']) ? trim(strip_tags((string)$_POST['mensaje'])) : '';
 
 if ($tarjeta_id === 0 || empty($nombre) || empty($mensaje)) {
     echo json_encode(['success' => false, 'message' => 'Por favor, completá todos los campos.']);
@@ -41,5 +41,6 @@ try {
 
 } catch (PDOException $e) {
     // Captura de errores de Base de Datos
-    echo json_encode(['success' => false, 'message' => 'Error interno: ' . $e->getMessage()]);
+    error_log('Error en guardar_deseo: ' . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'Error interno. Intentá nuevamente.']);
 }

@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 require_once __DIR__ . '/conexion.php';
 
 header('Content-Type: application/json');
@@ -10,9 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $tarjeta_id = intval($_POST['tarjeta_id'] ?? 0);
-$cancion = trim($_POST['cancion'] ?? '');
-$artista = trim($_POST['artista'] ?? '');
-$nombre_invitado = trim($_POST['nombre_invitado'] ?? '');
+$cancion = trim(strip_tags((string)($_POST['cancion'] ?? '')));
+$artista = trim(strip_tags((string)($_POST['artista'] ?? '')));
+$nombre_invitado = trim(strip_tags((string)($_POST['nombre_invitado'] ?? '')));
 
 if ($tarjeta_id <= 0 || empty($cancion) || empty($artista)) {
     echo json_encode(['success' => false, 'message' => 'Completá los campos obligatorios']);
@@ -36,5 +35,6 @@ try {
     echo json_encode(['success' => true]);
 
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Error BD: ' . $e->getMessage()]);
+    error_log('Error en guardar_playlist: ' . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'Error interno. Intentá nuevamente.']);
 }

@@ -5,7 +5,7 @@
 // o no hay música cargada, no hay nada que mostrar.
 if (empty($tarjeta['mod_musica']) || empty($tarjeta['link_musica'])) return;
 
-preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/\s]{11})%i', $tarjeta['link_musica'], $match);
+preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([A-Za-z0-9_-]{11})%i', $tarjeta['link_musica'], $match);
 $youtube_id = $match[1] ?? null;
 
 if ($youtube_id):

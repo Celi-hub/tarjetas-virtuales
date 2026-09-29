@@ -21,7 +21,8 @@ try {
         die('Error: Tarjeta no encontrada o acceso denegado.');
     }
 } catch (PDOException $e) {
-    die('Error de BD: ' . $e->getMessage());
+    error_log('Error de BD: ' . $e->getMessage());
+    die('Error de base de datos.');
 }
 
 $mensaje = '';

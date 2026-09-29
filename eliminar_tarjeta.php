@@ -35,6 +35,7 @@ try {
         header("Location: dashboard.php?error=no_autorizado");
     }
 } catch (PDOException $e) {
-    die("Error al eliminar: " . $e->getMessage());
+    error_log('Error al eliminar: ' . $e->getMessage());
+    die('Error al eliminar la tarjeta.');
 }
 exit;
