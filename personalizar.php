@@ -66,6 +66,7 @@ $precios_modulos = [
     'mod_pagar_evento'     => 2000,
     'mod_playlist'         => 800,
     'mod_linea_tiempo'     => 1200,
+    'mod_foto_portada'     => 2500,
 ];
 $precio_base = 3000;
 ?>

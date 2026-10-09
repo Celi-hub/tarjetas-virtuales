@@ -8,6 +8,7 @@
 $_textos_por_evento = [
 
     'boda' => [
+        'portada_intro'         => 'Para la boda de',
         'agasajados'            => 'los novios',
         'agasajado_singular'    => 'los novios',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -39,6 +40,7 @@ $_textos_por_evento = [
     ],
 
     'cumpleaños' => [
+        'portada_intro'         => 'Para el cumpleaños de',
         'agasajados'            => 'el/la festejado/a',
         'agasajado_singular'    => 'el/la festejado/a',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -64,6 +66,7 @@ $_textos_por_evento = [
     ],
 
     '15 años' => [
+        'portada_intro'         => 'Para los 15 de',
         'agasajados'            => 'la quinceañera',
         'agasajado_singular'    => 'la quinceañera',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -89,6 +92,7 @@ $_textos_por_evento = [
     ],
 
     'bautismo' => [
+        'portada_intro'         => 'Para el bautismo de',
         'agasajados'            => 'el/la bautizadx',
         'agasajado_singular'    => 'el/la bautizadx',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -114,6 +118,7 @@ $_textos_por_evento = [
     ],
 
     'egreso' => [
+        'portada_intro'         => 'Para el egreso de',
         'agasajados'            => 'los egresados',
         'agasajado_singular'    => 'los egresados',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -139,6 +144,7 @@ $_textos_por_evento = [
     ],
 
     'baby shower' => [
+        'portada_intro'         => 'Para el baby shower de',
         'agasajados'            => 'la futura mamá',
         'agasajado_singular'    => 'la futura mamá',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -164,6 +170,7 @@ $_textos_por_evento = [
     ],
 
     'revelación de género' => [
+        'portada_intro'         => 'Para la revelación de',
         'agasajados'            => 'los futuros papás',
         'agasajado_singular'    => 'los futuros papás',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -189,6 +196,7 @@ $_textos_por_evento = [
     ],
 
     'comunión' => [
+        'portada_intro'         => 'Para la comunión de',
         'agasajados'            => 'el/la comulgante',
         'agasajado_singular'    => 'el/la comulgante',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -214,6 +222,7 @@ $_textos_por_evento = [
     ],
 
     'confirmación' => [
+        'portada_intro'         => 'Para la confirmación de',
         'agasajados'            => 'el/la confirmandx',
         'agasajado_singular'    => 'el/la confirmandx',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -239,6 +248,7 @@ $_textos_por_evento = [
     ],
 
     'aniversario' => [
+        'portada_intro'         => 'Para el aniversario de',
         'agasajados'            => 'la pareja',
         'agasajado_singular'    => 'la pareja',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -264,6 +274,7 @@ $_textos_por_evento = [
     ],
 
     'corporativo' => [
+        'portada_intro'         => '',
         'agasajados'            => 'el equipo',
         'agasajado_singular'    => 'el equipo',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',
@@ -289,6 +300,7 @@ $_textos_por_evento = [
     ],
 
     'deportivo' => [
+        'portada_intro'         => '',
         'agasajados'            => 'los deportistas',
         'agasajado_singular'    => 'los deportistas',
         'titulo_rsvp'           => 'Confirmá tu Participación',
@@ -315,6 +327,7 @@ $_textos_por_evento = [
 
     // Eventos con textos genéricos (jubilación, inauguración, despedida, reunión familia)
     '_default' => [
+        'portada_intro'         => '',
         'agasajados'            => 'los agasajados',
         'agasajado_singular'    => 'el/la agasajado/a',
         'titulo_rsvp'           => 'Confirmá tu Asistencia',

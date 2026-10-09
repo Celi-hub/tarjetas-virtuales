@@ -1,201 +1,336 @@
 /* ==========================================================================
    MOMENTIA - TEMA: ROMÁNTICO
-   Rosa empolvado, caligrafía y pétalos. Bodas, compromisos, aniversarios,
-   15 años y todo lo que se celebra con cariño.
+   Papel cálido, tinta casi negra, caligrafía de firma y versalitas.
+   Inspirado en los "Save the date" editoriales: la foto del cliente
+   (módulo Deluxe mod_foto_portada) va en blanco y negro y aclarada detrás
+   del texto. Sin foto, la portada queda sobre papel liso.
 
    Toda la estructura y los componentes viven en base_tarjeta.css; este
    archivo solo define los tokens del tema y su decoración.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
 
 :root {
-    --gold:          #b04a66;
-    --gold-light:    #f2c9d3;
-    --gold-dark:     #8a3049;
-    --gold-bg:       rgba(176, 74, 102, 0.07);
-    --gold-border:   rgba(214, 140, 158, 0.42);
-    --on-accent:     #ffffff;
-    --petalo:        #f4b8c6;
-    --petalo-2:      #f9d5dd;
+    /* Acento = tinta. Al pasar, los botones se rellenan de tinta con texto papel. */
+    --gold:          #1d1c1a;
+    --gold-light:    #d6d0c7;
+    --gold-dark:     #000000;
+    --gold-bg:       rgba(29, 28, 26, 0.04);
+    --gold-border:   rgba(29, 28, 26, 0.22);
+    --on-accent:     #f4f1ec;
 
-    --bg-principal:  #fff5f6;
-    --bg-secundario: #fde8ec;
-    --text-dark:     #4a2a33;
-    --text-mid:      #6e4b55;
-    --text-light:    #90727b;
+    --papel:         #f4f1ec;
+    --filete:        #bdb6ad;          /* líneas finas */
+    --filete-suave:  #d6d0c7;
+    --caligrafia:    'Mrs Saint Delafield', 'Brush Script MT', cursive;
 
-    --fuente-titulos: 'Playfair Display', Georgia, serif;
-    --fuente-textos:  'Lato', 'Segoe UI', sans-serif;
-    --titulo-estilo:  italic;
+    --bg-principal:  var(--papel);
+    --bg-secundario: #ebe6de;
+    --text-dark:     #1d1c1a;
+    --text-mid:      #3a3632;
+    --text-light:    #5e5851;
+
+    --fuente-titulos: var(--caligrafia);
+    --fuente-textos:  'Cormorant Garamond', Georgia, serif;
+    --titulo-estilo:  normal;
     --titulo-peso:    400;
-    --eyebrow-spacing: 3.5px;
+    --eyebrow-spacing: 0.3em;
+    --eyebrow-size:    0.8rem;
 
-    --radius:         999px;
-    --radius-sm:      12px;
-    --radius-card:    22px;
+    --radius:         0;
+    --radius-sm:      0;
+    --radius-card:    0;
 
-    --surface-bg:     linear-gradient(160deg, rgba(255,255,255,.9), rgba(255,240,243,.75));
-    --surface-border: rgba(214, 140, 158, 0.38);
-    --surface-shadow: 0 14px 34px rgba(176, 74, 102, 0.10);
-    --surface-blur:   6px;
+    --surface-bg:     rgba(255, 255, 255, 0.35);
+    --surface-border: var(--filete);
+    --surface-shadow: none;
+    --surface-blur:   0px;
+    --surface-pad:    26px;
 
     --field-bg:       transparent;
     --field-border:   0 solid transparent;
-    --field-border-b: 1px solid var(--petalo);
+    --field-border-b: 1px solid #6e675f;
     --field-radius:   0;
     --field-pad:      10px 2px;
+    --field-focus:    var(--text-dark);
 
-    --btn-pad:        13px 34px;
-    --btn-size:       0.74rem;
-    --btn-peso:       700;
-    --btn-spacing:    2.4px;
-    --btn-sombra:     0 6px 16px rgba(176, 74, 102, 0.22);
-    --btn-sombra-hover: 0 10px 22px rgba(176, 74, 102, 0.3);
-    --btn-mueve:      2px;
+    --btn-pad:        14px 28px;
+    --btn-size:       0.8rem;
+    --btn-peso:       600;
+    --btn-spacing:    0.26em;
+    --btn-borde:      1px;
+    --btn-sombra:     none;
+    --btn-sombra-hover: none;
+    --btn-mueve:      0px;
 
-    --glow-color:     rgba(244, 184, 198, 0.42);
-    --glow-size:      min(84vw, 560px);
+    --glow-color:     transparent;
 
-    --marco-border:   1px solid rgba(214, 140, 158, 0.6);
-    --marco-bg:       rgba(255, 255, 255, 0.7);
-    --marco-radius:   220px 220px 24px 24px;
-    --marco-shadow:   0 22px 50px rgba(176, 74, 102, 0.14);
+    --marco-border:   0 solid transparent;
+    --marco-bg:       transparent;
+    --marco-radius:   0;
+    --marco-shadow:   none;
+
+    /* Foto Deluxe: blanco y negro suave, aclarada con el papel */
+    --foto-posicion:      50% 30%;
+    --foto-filtro:        grayscale(0.85) contrast(0.92) brightness(1.06);
+    --foto-velo:          var(--papel);
+    --foto-velo-opacidad: 0.6;
 }
 
-/* ── Corazón en lugar del destello en divisores ── */
-.portada-linea-decorativa span,
-.divisor-decorativo span { font-size: 0; }
-.portada-linea-decorativa span::before,
-.divisor-decorativo span::before { content: '\2665'; font-size: 0.95rem; color: var(--gold); }
+body.tema-romantico { background: var(--papel); }
 
+/* ── Pantalla de misterio ── */
+.misterio-wrapper { background: var(--papel); }
+.misterio-texto {
+    font-family: var(--caligrafia);
+    font-style: normal;
+    font-weight: 400;
+    font-size: clamp(3rem, 14vw, 4.6rem);
+    line-height: 1.05;
+    color: var(--text-dark);
+}
+.misterio-pregunta { font-style: italic; font-size: 1.15rem; color: var(--text-mid); }
+.btn-misterio {
+    background: transparent;
+    border: 1px solid var(--text-dark);
+    border-radius: 0;
+    color: var(--text-dark);
+    font-family: var(--fuente-textos);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+/* ── Portada ── */
+.portada-wrapper { background: var(--papel); }
+.portada-fondo-animado { display: none; }
+
+/* Fundido superior: el comienzo de la caligrafía siempre queda sobre papel */
+.portada--con-foto::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 18%;
+    background: linear-gradient(var(--papel), rgba(244, 241, 236, 0));
+    z-index: 1;
+    pointer-events: none;
+}
+
+.portada-marco {
+    padding: clamp(24px, 6vh, 56px) clamp(18px, 6vw, 32px) 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+/* Frase: caligrafía grande. Corta (2-4 palabras) -> escalonada como en un save the date */
+.portada-frase {
+    font-family: var(--caligrafia);
+    font-style: normal;
+    font-weight: 400;
+    font-size: clamp(2.8rem, 12vw, 3.8rem);
+    line-height: 1.05;
+    color: var(--text-dark);
+    margin-bottom: clamp(36px, 8vh, 72px);
+}
+.portada-frase--escalonada {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(4.4rem, 27vw, 7.6rem);
+    line-height: 0.9;
+}
+.portada-frase--escalonada .portada-frase-palabra { display: block; }
+.portada-frase--escalonada .portada-frase-palabra + .portada-frase-palabra { margin-top: -0.06em; }
+.portada-frase--escalonada .portada-frase-palabra:nth-child(1) { align-self: flex-start; }
+.portada-frase--escalonada .portada-frase-palabra:nth-child(2) { align-self: center; }
+.portada-frase--escalonada .portada-frase-palabra:nth-child(3) { align-self: flex-end; margin-right: 8%; }
+.portada-frase--escalonada .portada-frase-palabra:nth-child(4) { align-self: flex-end; }
+/* Dos palabras: la segunda baja a la derecha */
+.portada-frase--escalonada .portada-frase-palabra:nth-child(2):last-child { align-self: flex-end; margin-right: 6%; }
+
+.portada-linea-decorativa { display: none; }
+
+.portada-intro {
+    display: block;
+    font-family: var(--fuente-textos);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+    margin: 0 0 16px;
+}
+
+.portada-nombre {
+    font-family: var(--fuente-textos);
+    font-style: normal;
+    font-weight: 600;
+    font-size: clamp(1.45rem, 6.8vw, 2.1rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    line-height: 1.35;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+}
+
+.portada-fecha {
+    font-family: var(--fuente-textos);
+    font-size: clamp(1.05rem, 4.6vw, 1.25rem);
+    font-weight: 500;
+    font-variant: small-caps;
+    text-transform: none;
+    letter-spacing: 0.1em;
+    color: var(--text-mid);
+}
+
+.portada-scroll-hint span {
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    color: var(--text-mid);
+}
+/* La flecha pasa a ser un filete vertical */
+.portada-scroll-hint .scroll-arrow {
+    width: 1px;
+    height: 34px;
+    border: 0;
+    background: var(--text-mid);
+    transform: none;
+    animation: fileteRespira 2.4s ease-in-out infinite;
+}
+@keyframes fileteRespira {
+    0%, 100% { transform: scaleY(1);   transform-origin: top; }
+    50%      { transform: scaleY(0.6); transform-origin: top; }
+}
+
+/* ── Componentes ── */
+.eyebrow { font-weight: 600; color: var(--text-mid); }
+
+.modulo-titulo {
+    font-size: clamp(3.4rem, 16vw, 4.8rem);
+    line-height: 1;
+    margin-bottom: 18px;
+    color: var(--text-dark);
+}
+
+.modulo-texto {
+    font-size: 1.2rem;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--text-mid);
+}
+
+.icono-modulo { width: 44px; height: 44px; color: var(--text-dark); opacity: 0.85; }
+
+/* Divisor: filetes con un rombo hueco */
 .portada-linea-decorativa::before,
 .portada-linea-decorativa::after,
 .divisor-decorativo::before,
-.divisor-decorativo::after { background: linear-gradient(to right, transparent, var(--petalo)); }
-.portada-linea-decorativa::after,
-.divisor-decorativo::after { background: linear-gradient(to left, transparent, var(--petalo)); }
-
-/* ── Pantalla de misterio ── */
-.misterio-wrapper {
-    background:
-        radial-gradient(circle at 15% 15%, var(--petalo-2) 0, transparent 40%),
-        radial-gradient(circle at 85% 85%, var(--petalo) 0, transparent 42%),
-        var(--bg-principal);
-}
-.misterio-texto { font-family: 'Great Vibes', cursive; font-style: normal; font-size: clamp(2.6rem, 11vw, 3.8rem); color: var(--gold-dark); font-weight: 400; }
-.btn-misterio { background: rgba(255,255,255,.8); border-color: var(--gold); color: var(--gold-dark); font-weight: 700; }
-
-/* ── Portada: ventana en arco, flores y pétalos ── */
-.portada-wrapper {
-    background:
-        radial-gradient(ellipse 70% 40% at 0% 0%, var(--petalo-2) 0, transparent 70%),
-        radial-gradient(ellipse 70% 40% at 100% 100%, var(--petalo) 0, transparent 70%),
-        var(--bg-principal);
-}
-.portada-fondo-animado {
-    background: radial-gradient(circle, var(--petalo) 0%, transparent 68%);
-    opacity: 0.3;
-}
-
-/* Pétalos que caen (dos capas con distinta velocidad) */
-.portada-wrapper::before,
-.portada-wrapper::after {
+.divisor-decorativo::after { background: var(--filete); }
+.divisor-decorativo span { font-size: 0; }
+.divisor-decorativo span::before {
     content: '';
-    position: absolute;
-    top: -40px;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    pointer-events: none;
-    z-index: 3;
-    background:
-        radial-gradient(ellipse 7px 11px at 8% 50%, var(--petalo) 98%, transparent),
-        radial-gradient(ellipse 6px 9px at 27% 50%, var(--petalo-2) 98%, transparent),
-        radial-gradient(ellipse 8px 12px at 46% 50%, var(--petalo) 98%, transparent),
-        radial-gradient(ellipse 6px 10px at 68% 50%, var(--petalo-2) 98%, transparent),
-        radial-gradient(ellipse 7px 11px at 90% 50%, var(--petalo) 98%, transparent);
-    animation: caerPetalos 14s linear infinite;
-    opacity: 0.85;
-}
-.portada-wrapper::after {
-    left: 6%;
-    width: 88%;
-    animation-duration: 21s;
-    animation-delay: -8s;
-    transform: scaleX(-1);
-}
-@keyframes caerPetalos {
-    0%   { transform: translateY(0) rotate(0deg); }
-    100% { transform: translateY(calc(100svh + 80px)) rotate(35deg); }
-}
-
-.portada-marco { padding-top: clamp(64px, 16vw, 96px); }
-.portada-frase { font-style: italic; font-size: clamp(1.05rem, 4.4vw, 1.4rem); color: var(--gold-dark); }
-.portada-nombre {
-    font-family: 'Great Vibes', cursive;
-    font-style: normal;
-    font-weight: 400;
-    font-size: clamp(3.2rem, 15vw, 5.6rem);
-    line-height: 1.05;
-    color: var(--gold-dark);
-}
-.portada-fecha { color: var(--text-mid); letter-spacing: 3px; font-weight: 400; }
-
-/* ── Componentes ── */
-.modulo-titulo { font-weight: 400; }
-.eyebrow { font-weight: 700; color: var(--gold); }
-.icono-modulo { color: var(--gold); }
-.modulo-regalos .icono-modulo { color: var(--gold); }
-.modulo-titulo::after {
-    content: '\2665';
     display: block;
-    margin-top: 8px;
-    font-size: 0.9rem;
-    font-style: normal;
-    color: var(--petalo);
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--text-mid);
+    transform: rotate(45deg);
 }
 
-.btn,
-.btn-accion,
-.rsvp-submit,
-.btn-muro-submit,
-.btn--gold {
-    background: linear-gradient(135deg, #c25a77, var(--gold-dark));
-    border-color: transparent;
-    color: #fff;
+/* Cajas: marco doble de filete fino */
+.caja-vidrio,
+.regalos-caja-bancaria,
+.dress-code-texto,
+.lt-item,
+.muro-item,
+.pago-tarifas {
+    outline: 1px solid var(--filete-suave);
+    outline-offset: 5px;
 }
-.btn svg,
-.btn-accion svg { stroke: #fff; }
-.btn:hover,
-.btn-accion:hover,
-.rsvp-submit:hover,
-.btn-muro-submit:hover,
-.btn--gold:hover { background: linear-gradient(135deg, #d0698a, var(--gold)); }
-.btn--whatsapp { background: #fff; color: var(--wa-green-dark); border-color: var(--wa-green); box-shadow: none; }
-.btn--whatsapp svg { fill: currentColor; }
-.btn--spotify { background: #fff; box-shadow: none; }
-.btn--mp { background: #fff; box-shadow: none; }
-.btn--secundario { background: rgba(255,255,255,.7); color: var(--text-mid); border-color: var(--gold-light); box-shadow: none; }
-.btn--secundario:hover { background: var(--bg-secundario); border-color: var(--gold); }
-.btn--copiar { background: #fff; color: var(--gold-dark); border-color: var(--gold-light); box-shadow: none; }
-.btn--copiar:hover { background: var(--gold); color: #fff; }
-.btn--mp-disabled { background: transparent; box-shadow: none; }
 
+/* Campos */
+.campo-form label,
+.rsvp-field label,
+.pago-field label {
+    font-family: var(--fuente-textos);
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--text-light);
+}
+.campo-form input,
+.campo-form textarea,
+.campo-form select,
+.rsvp-field input,
+.rsvp-field textarea,
+.rsvp-field select { font-family: var(--fuente-textos); font-size: 1.15rem; }
+::placeholder { font-style: italic; color: #7a736b; }
+
+/* Opciones (Asistiré / No asistiré): rectángulos de filete; elegida = tinta */
 .campo-form-opciones label,
 .rsvp-opcion label,
-.rsvp-opcion-item label { border-color: var(--petalo); background: rgba(255,255,255,.7); }
+.rsvp-opcion-item label {
+    border-color: #6e675f;
+    background: transparent;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    color: var(--text-dark);
+}
 
-.lt-punto { background: var(--petalo-2); border-color: var(--gold); }
-.lt-fecha { font-family: 'Great Vibes', cursive; font-size: 1.25rem; letter-spacing: 0.5px; text-transform: none; font-weight: 400; padding: 2px 16px; }
-.lt-foto { border-radius: 16px; }
+/* Botones: contorno de tinta; el envío de formularios va relleno */
+.rsvp-submit,
+.btn-muro-submit {
+    background: var(--text-dark);
+    border-color: var(--text-dark);
+    color: var(--on-accent);
+}
+.rsvp-submit svg,
+.btn-muro-submit svg { stroke: var(--on-accent); }
+.rsvp-submit:hover,
+.btn-muro-submit:hover { background: #000000; }
+
+.btn--whatsapp { background: transparent; color: var(--text-dark); border-color: var(--text-dark); }
+.btn--whatsapp svg { fill: currentColor; }
+.btn--whatsapp:hover { background: var(--text-dark); color: var(--on-accent); }
+.btn--spotify,
+.btn--mp { background: transparent; box-shadow: none; }
+.btn--secundario { background: transparent; color: var(--text-mid); border-color: var(--filete); }
+.btn--secundario:hover { background: var(--bg-secundario); color: var(--text-dark); border-color: var(--text-dark); }
+.btn--copiar { background: transparent; color: var(--text-dark); border-color: var(--text-dark); }
+.btn--copiar:hover { background: var(--text-dark); color: var(--on-accent); }
+.btn--mp-disabled { background: transparent; box-shadow: none; }
+
+/* ── Módulos ── */
+.mod-rsvp-interno h3 {
+    font-family: var(--caligrafia);
+    font-size: clamp(3rem, 14vw, 4.2rem);
+    line-height: 1;
+}
+.mod-rsvp-interno .rsvp-subtitle,
+.rsvp-fecha-limite { font-style: italic; font-size: 1.1rem; }
+.lt-punto { background: var(--papel); border-color: var(--text-dark); }
+.lt-fecha {
+    font-family: var(--caligrafia);
+    font-size: 1.9rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    background: transparent;
+    color: var(--text-dark);
+    padding: 0 8px;
+}
+.lt-foto,
+.foto-item { border-radius: 0; filter: grayscale(0.35); }
+.dress-code-tipo { font-family: var(--fuente-textos); font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
 .pago-tarifas-titulo { background: var(--bg-secundario); }
-.dress-code-tipo { font-family: var(--fuente-textos); }
-.foto-item { border-radius: 18px; }
-.ilustracion-asomada { color: var(--petalo); opacity: 0.9; z-index: 1; }
-.btn-musica-flotante { background: rgba(255,255,255,.9); border-color: var(--petalo); }
+.ilustracion-asomada { color: var(--filete); opacity: 0.9; z-index: 1; }
+.btn-musica-flotante { background: rgba(244, 241, 236, 0.92); border-color: var(--text-dark); color: var(--text-dark); }
 
 @media (prefers-reduced-motion: reduce) {
-    .portada-wrapper::before,
-    .portada-wrapper::after { animation: none; display: none; }
+    .portada-scroll-hint .scroll-arrow { animation: none; }
 }

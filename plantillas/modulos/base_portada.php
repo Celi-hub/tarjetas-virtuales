@@ -14,6 +14,19 @@ if ($tiene_fecha) {
 
 $frase_cliente = trim($tarjeta['frase_portada'] ?? '');
 
+// Frases cortas (2 a 4 palabras) se marcan como "escalonadas": cada palabra va en
+// su propio <span> para que los temas puedan componerlas en líneas desfasadas
+// (ej. "Reserva / la / fecha" en Romántico). En el resto de los temas se ven igual.
+$frase_palabras   = $frase_cliente !== '' ? preg_split('/\s+/u', $frase_cliente) : [];
+$frase_escalonada = count($frase_palabras) >= 2 && count($frase_palabras) <= 4;
+
+// Línea previa a los nombres ("Para la boda de"). Oculta en la base; la muestra cada tema.
+$portada_intro = trim($t['portada_intro'] ?? '');
+
+// Foto personal del cliente (módulo Deluxe mod_foto_portada). null si no aplica.
+require_once __DIR__ . '/../../helpers/foto_portada.php';
+$foto_portada = momentia_url_foto_portada($tarjeta);
+
 // El módulo música ya no tiene pantalla propia: la pregunta "¿con o sin
 // música?" se resuelve acá mismo, en la pantalla de misterio. Si el cliente
 // no activó el módulo de música o no cargó música, no hay nada que preguntar.
@@ -56,18 +69,32 @@ $musica_disponible = !empty($tarjeta['mod_musica']) && !empty($tarjeta['link_mus
 </div>
 
 <!-- 2. PORTADA PRINCIPAL -->
-<section id="portada-principal" class="modulo-fullscreen portada-wrapper">
+<section id="portada-principal" class="modulo-fullscreen portada-wrapper<?php echo $foto_portada ? ' portada--con-foto' : ''; ?>">
     
     <div class="portada-fondo-animado"></div>
+
+    <?php if ($foto_portada): ?>
+    <div class="portada-foto" aria-hidden="true">
+        <img src="<?php echo htmlspecialchars($foto_portada); ?>" alt="" decoding="async" fetchpriority="high">
+    </div>
+    <?php endif; ?>
 
     <div class="portada-marco">
         <div class="modulo-contenido portada-contenido">
 
             <?php if ($frase_cliente): ?>
-                <p class="portada-frase anim-escalonada anim-delay-1"><?php echo htmlspecialchars($frase_cliente); ?></p>
+                <p class="portada-frase<?php echo $frase_escalonada ? ' portada-frase--escalonada' : ''; ?> anim-escalonada anim-delay-1"><?php
+                    foreach ($frase_palabras as $palabra) {
+                        echo '<span class="portada-frase-palabra">' . htmlspecialchars($palabra) . '</span> ';
+                    }
+                ?></p>
                 <div class="portada-linea-decorativa anim-escalonada anim-delay-2"><span>✦</span></div>
             <?php else: ?>
                 <div class="portada-linea-decorativa anim-escalonada anim-delay-1" style="margin-bottom:24px;"><span>✦</span></div>
+            <?php endif; ?>
+
+            <?php if ($portada_intro !== ''): ?>
+                <p class="portada-intro anim-escalonada anim-delay-3"><?php echo htmlspecialchars($portada_intro); ?></p>
             <?php endif; ?>
 
             <h1 class="portada-nombre anim-escalonada anim-delay-3">

@@ -1,403 +1,483 @@
 /* ==========================================================================
-   MOMENTIA - TEMA: DIVERTIDO  (v3, rehecho desde cero)
-   Pop festivo tipo "sticker": tinta índigo, bordes gruesos, sombras duras,
-   banderines y bandas de color. Para cumpleaños, fiestas y eventos joviales.
+   MOMENTIA - TEMA: DIVERTIDO  (v4)
+   Festivo pero adulto: fondos de color plenos (azul, amarillo, durazno,
+   lavanda, verde agua), guirnaldas de banderines, globos y confeti, formas
+   orgánicas sin contornos. Tipografía: Fraunces (títulos, itálica pesada)
+   + Bricolage Grotesque (textos).
 
    Toda la estructura y los componentes viven en base_tarjeta.css; este
-   archivo solo define los tokens del tema y su decoración (100% CSS: no
-   necesita JS para verse bien; el confeti es un extra de js/confeti.js).
+   archivo solo define los tokens del tema y su decoración. Las ilustraciones
+   son SVG en img/decoracion/divertido/ (sin JS; el confeti animado es un
+   extra de js/confeti.js).
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap');
 
 :root {
-    /* Paleta pop */
-    --ink:           #1e1b4b;
-    --pop-rosa:      #e91e78;
-    --pop-amarillo:  #ffc53d;
-    --pop-celeste:   #23b5f0;
-    --pop-menta:     #33c48e;
-    --pop-violeta:   #7c5cff;
-    --confeti-colores: #e91e78, #ffc53d, #23b5f0, #33c48e, #7c5cff, #ff7a45;
+    /* Paleta */
+    --tinta:         #1f2a5a;   /* texto: navy */
+    --tinta-2:       #2c3666;
+    --crema:         #fff6e6;
+    --cobalto:       #4155c0;
+    --coral:         #f27a62;
+    --sol:           #f7c548;
+    --menta:         #5fb39a;
+    --lila:          #c4b3f2;
+    /* Fondos de sección (claros: texto navy) */
+    --fondo-sol:     #f7c548;
+    --fondo-durazno: #f8a891;
+    --fondo-lavanda: #c9bdf2;
+    --fondo-agua:    #a9dcc9;
+    --confeti-colores: #f27a62, #f7c548, #5fb39a, #4155c0, #c4b3f2, #fff6e6;
+
 
     /* Tokens del núcleo */
-    --gold:          #e91e78;
-    --gold-light:    #ffc6dc;
-    --gold-dark:     #b8125c;
-    --gold-bg:       rgba(233, 30, 120, 0.08);
-    --gold-border:   var(--ink);
-    --on-accent:     #ffffff;
+    --gold:          var(--tinta);
+    --gold-light:    var(--crema);
+    --gold-dark:     var(--cobalto);
+    --gold-bg:       rgba(31, 42, 90, 0.06);
+    --gold-border:   transparent;
+    --on-accent:     var(--crema);
 
-    --bg-principal:  #fff8e8;
-    --bg-secundario: #ffeecb;
-    --text-dark:     var(--ink);
-    --text-mid:      #3b3866;
-    --text-light:    #5d5a86;
+    --bg-principal:  var(--fondo-sol);
+    --bg-secundario: var(--crema);
+    --text-dark:     var(--tinta);
+    --text-mid:      var(--tinta-2);
+    --text-light:    #3b4677;
 
-    --fuente-titulos: 'Fredoka', 'Nunito', system-ui, sans-serif;
-    --fuente-textos:  'Nunito', system-ui, sans-serif;
-    --titulo-estilo:  normal;
-    --titulo-peso:    600;
-    --eyebrow-spacing: 2.5px;
-    --eyebrow-size:   0.74rem;
+    --fuente-titulos: 'Fraunces', Georgia, serif;
+    --fuente-textos:  'Bricolage Grotesque', 'Segoe UI', sans-serif;
+    --titulo-estilo:  italic;
+    --titulo-peso:    800;
+    --titulo-spacing: -0.02em;
+    --eyebrow-spacing: 0.18em;
+    --eyebrow-size:   0.85rem;
 
+    /* Formas: esquinas desparejas, nada de bordes */
     --radius:         999px;
-    --radius-sm:      12px;
-    --radius-card:    22px;
-    --borde-ancho:    2.5px;
+    --radius-sm:      14px;
+    --radius-card:    36px 24px 40px 26px;
+    --borde-ancho:    0px;
 
-    --surface-bg:     #ffffff;
-    --surface-border: var(--ink);
-    --surface-shadow: 5px 5px 0 var(--ink);
+    --surface-bg:     var(--crema);
+    --surface-border: transparent;
+    --surface-shadow: none;
     --surface-blur:   0px;
-    --surface-pad:    22px;
+    --surface-pad:    24px;
 
-    --field-bg:       #ffffff;
-    --field-border:   2.5px solid var(--ink);
-    --field-border-b: 2.5px solid var(--ink);
-    --field-radius:   14px;
-    --field-pad:      12px 14px;
+    --field-bg:       var(--crema);
+    --field-border:   0 solid transparent;
+    --field-border-b: 0 solid transparent;
+    --field-radius:   18px 24px 16px 22px;
+    --field-pad:      14px 18px;
+    --field-focus:    var(--tinta);
 
-    --btn-pad:        13px 28px;
-    --btn-size:       0.98rem;
-    --btn-peso:       800;
-    --btn-spacing:    0.3px;
+    --btn-pad:        15px 28px;
+    --btn-size:       1rem;
+    --btn-peso:       700;
+    --btn-spacing:    0.01em;
     --btn-mayus:      none;
-    --btn-borde:      2.5px;
-    --btn-sombra:     4px 4px 0 var(--ink);
-    --btn-sombra-hover: 6px 6px 0 var(--ink);
+    --btn-borde:      0px;
+    --btn-sombra:     none;
+    --btn-sombra-hover: none;
     --btn-mueve:      2px;
 
-    --glow-color:     rgba(255, 197, 61, 0.35);
-    --glow-size:      min(90vw, 560px);
+    --glow-color:     transparent;
 
-    --marco-border:   3px solid var(--ink);
-    --marco-bg:       #ffffff;
-    --marco-radius:   28px;
-    --marco-shadow:   8px 8px 0 var(--ink);
+    --marco-border:   0 solid transparent;
+    --marco-bg:       transparent;
+    --marco-radius:   0;
+    --marco-shadow:   none;
+
+    /* Foto Deluxe: en este tema es una polaroid, sin filtro ni velo */
+    --foto-posicion:      50% 25%;
+    --foto-filtro:        none;
+    --foto-velo-opacidad: 0;
 
     --animacion-suave: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    --transicion:      0.18s ease-out;
+    --transicion:      0.2s ease-out;
 }
 
-body { font-weight: 600; }
-
-
-/* ── Fondo global: confeti sutil que se queda fijo ── */
-body.tema-divertido {
-    background-image:
-        radial-gradient(circle at 12% 18%, var(--pop-amarillo) 0 3px, transparent 4px),
-        radial-gradient(circle at 88% 34%, var(--pop-celeste) 0 3px, transparent 4px),
-        radial-gradient(circle at 24% 72%, var(--pop-rosa) 0 3px, transparent 4px),
-        radial-gradient(circle at 76% 86%, var(--pop-menta) 0 3px, transparent 4px);
-    background-attachment: fixed;
-}
-
-/* Bandas de color alternadas + banderines arriba de cada módulo */
-.tema-divertido .modulo-fullscreen:not(.portada-wrapper) {
-    padding-top: clamp(76px, 12vh, 104px);
-}
-.tema-divertido .modulo-fullscreen:nth-of-type(4n+2) { background-color: #fff1c7; }
-.tema-divertido .modulo-fullscreen:nth-of-type(4n+3) { background-color: #ffe0ee; }
-.tema-divertido .modulo-fullscreen:nth-of-type(4n+4) { background-color: #dff4ff; }
-.tema-divertido .modulo-fullscreen:nth-of-type(4n+5) { background-color: #dcf7ea; }
-
-.tema-divertido .modulo-fullscreen:not(.portada-wrapper)::after {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 30px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='30'%3E%3Cpath d='M0 3h96' stroke='%231e1b4b' stroke-width='2.5'/%3E%3Cpath d='M3 3h20L13 24z' fill='%23e91e78' stroke='%231e1b4b' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M27 3h20L37 24z' fill='%23ffc53d' stroke='%231e1b4b' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M51 3h20L61 24z' fill='%2323b5f0' stroke='%231e1b4b' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M75 3h20L85 24z' fill='%2333c48e' stroke='%231e1b4b' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") repeat-x top center;
-    pointer-events: none;
-    z-index: 0;
-}
+body.tema-divertido { background: var(--fondo-sol); color: var(--tinta); }
 
 
 /* ── Pantalla de misterio ── */
 .tema-divertido .misterio-wrapper {
     background:
-        radial-gradient(circle at 20% 20%, rgba(255,197,61,.55), transparent 45%),
-        radial-gradient(circle at 80% 80%, rgba(35,181,240,.4), transparent 45%),
-        linear-gradient(135deg, #ffe0ee, #fff1c7);
+        url('../img/decoracion/divertido/manchas.svg') center / 100% 100% no-repeat,
+        url('../img/decoracion/divertido/confeti.svg') center / cover no-repeat,
+        var(--cobalto);
 }
 .tema-divertido .misterio-texto {
-    color: var(--ink);
-    font-weight: 700;
-    text-shadow: 3px 3px 0 var(--pop-amarillo), 5px 5px 0 var(--ink);
-    animation: entrarSuave 1.2s ease forwards 0.3s, brincar 2.2s ease-in-out 1.6s infinite;
-}
-.tema-divertido .misterio-pregunta {
-    display: inline-block;
-    padding: 6px 16px;
-    border: 2.5px solid var(--ink);
-    border-radius: 999px;
-    background: #fff;
-    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
     font-weight: 800;
+    font-size: clamp(2.4rem, 11vw, 3.6rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--crema);
 }
+.tema-divertido .misterio-pregunta { color: var(--crema); font-weight: 600; }
 .tema-divertido .btn-misterio {
-    background: #fff;
-    color: var(--ink);
-    border: 2.5px solid var(--ink);
-    border-radius: 999px;
-    padding: 13px 22px;
-    font-size: 0.95rem;
-    font-weight: 800;
-    letter-spacing: 0.3px;
+    background: var(--crema);
+    color: var(--tinta);
+    border: 0;
+    border-radius: 26px 20px 24px 18px;
+    padding: 14px 22px;
+    font-family: var(--fuente-textos);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0;
     text-transform: none;
-    box-shadow: 4px 4px 0 var(--ink);
+    box-shadow: none;
 }
-.tema-divertido .btn-misterio:hover { background: var(--pop-amarillo); color: var(--ink); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
-.tema-divertido .btn-misterio:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+.tema-divertido .btn-misterio:hover { background: var(--sol); color: var(--tinta); transform: rotate(-2deg); }
 .tema-divertido .btn-misterio .icono-svg,
-.tema-divertido .btn-misterio:hover .icono-svg { stroke: var(--ink); }
+.tema-divertido .btn-misterio:hover .icono-svg { stroke: var(--tinta); }
 
-@keyframes brincar {
-    0%, 100% { transform: translateY(0) rotate(-1deg); }
-    50%      { transform: translateY(-8px) rotate(1deg); }
+
+/* ── Portada: fondo cobalto, guirnalda, globos y lanzapapeles ── */
+.tema-divertido .portada-wrapper {
+    background:
+        url('../img/decoracion/divertido/guirnalda-claro.svg') top center / 100% auto no-repeat,
+        url('../img/decoracion/divertido/manchas.svg') center / 100% 100% no-repeat,
+        var(--cobalto);
+    color: var(--crema);
+    padding-top: clamp(110px, 16svh, 150px);
 }
-
-
-/* ── Portada ── */
-.tema-divertido .portada-wrapper { background: linear-gradient(180deg, #fff8e8 0%, #ffe9f2 100%); }
-
-/* Formas flotantes (círculo, estrella, triángulo, rombo) */
+/* Confeti suelto */
 .tema-divertido .portada-wrapper::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background:
-        radial-gradient(circle at 10% 12%, var(--pop-celeste) 0 14px, transparent 15px),
-        radial-gradient(circle at 92% 20%, var(--pop-amarillo) 0 20px, transparent 21px),
-        radial-gradient(circle at 6% 70%, var(--pop-menta) 0 10px, transparent 11px),
-        radial-gradient(circle at 90% 74%, var(--pop-violeta) 0 16px, transparent 17px),
-        radial-gradient(circle at 20% 93%, var(--pop-rosa) 0 12px, transparent 13px);
-    animation: flotarFormas 7s ease-in-out infinite alternate;
+    background: url('../img/decoracion/divertido/confeti.svg') center / cover no-repeat;
 }
-@keyframes flotarFormas {
-    from { transform: translateY(0); }
-    to   { transform: translateY(-14px); }
-}
-
-.tema-divertido .portada-fondo-animado {
-    width: min(120vw, 620px);
-    height: min(120vw, 620px);
-    background: conic-gradient(from 0deg, var(--pop-amarillo), var(--pop-rosa), var(--pop-celeste), var(--pop-menta), var(--pop-amarillo));
-    opacity: 0.16;
-    filter: blur(20px);
-    animation: girar 24s linear infinite;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-@keyframes girar {
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-.tema-divertido .portada-marco {
-    rotate: -1.2deg;
-    padding-top: clamp(44px, 9vw, 64px);
-}
-/* "cinta" pegada arriba del sticker */
-.tema-divertido .portada-marco::before {
+/* Racimo de globos arriba a la derecha */
+.tema-divertido .portada-wrapper::after {
     content: '';
     position: absolute;
-    top: -16px;
-    left: 50%;
-    width: 110px;
-    height: 30px;
-    translate: -50% 0;
-    rotate: 3deg;
-    background: repeating-linear-gradient(45deg, var(--pop-amarillo) 0 10px, #ffe08a 10px 20px);
-    border: 2.5px solid var(--ink);
-    border-radius: 4px;
+    top: clamp(70px, 10svh, 96px);
+    right: -6px;
+    width: min(46vw, 200px);
+    aspect-ratio: 200 / 320;
+    z-index: 1;
+    pointer-events: none;
+    background: url('../img/decoracion/divertido/globos-claro.svg') center / contain no-repeat;
+    animation: flotarGlobos 6s ease-in-out infinite alternate;
+}
+@keyframes flotarGlobos {
+    from { transform: translateY(0) rotate(0deg); }
+    to   { transform: translateY(-12px) rotate(1.5deg); }
+}
+/* Lanzapapeles abajo a la izquierda (reutiliza el div de fondo animado) */
+.tema-divertido .portada-fondo-animado {
+    top: auto;
+    left: -10px;
+    bottom: -8px;
+    width: min(66vw, 270px);
+    height: auto;
+    max-width: none;
+    aspect-ratio: 270 / 260;
+    border-radius: 0;
+    opacity: 1;
+    transform: none;
+    animation: none;
+    z-index: 0;
+    background: url('../img/decoracion/divertido/lanzapapeles.svg') center / contain no-repeat;
 }
 
+.tema-divertido .portada-marco { padding: 0 clamp(22px, 7vw, 32px); }
+.tema-divertido .portada-contenido { align-items: flex-start; text-align: left; }
+
+/* La frase hace de "eyebrow" amarillo */
 .tema-divertido .portada-frase {
     font-family: var(--fuente-textos);
-    font-weight: 800;
-    font-size: clamp(0.95rem, 4vw, 1.15rem);
-    color: var(--pop-rosa);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 14px;
-}
-.tema-divertido .portada-linea-decorativa::before,
-.tema-divertido .portada-linea-decorativa::after {
-    height: 0;
-    background: none;
-    border-top: 3px dotted var(--ink);
-}
-.tema-divertido .portada-linea-decorativa span { color: var(--pop-amarillo); -webkit-text-stroke: 1.5px var(--ink); font-size: 1.3rem; }
-
-.tema-divertido .portada-nombre {
+    font-style: normal;
     font-weight: 700;
-    color: var(--ink);
-    text-shadow: 3px 3px 0 var(--pop-amarillo);
-    letter-spacing: -0.5px;
+    font-size: clamp(0.85rem, 3.6vw, 0.95rem);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    color: var(--sol);
+    margin-bottom: 10px;
+    text-wrap: pretty;
 }
-.tema-divertido .portada-fecha-wrap { margin-top: 4px; }
+.tema-divertido .portada-linea-decorativa { display: none; }
+.tema-divertido .portada-intro {
+    display: block;
+    order: 1;
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.15rem, 5vw, 1.4rem);
+    color: #e6e9fb;
+    margin: 0 0 4px;
+}
+.tema-divertido .portada-nombre {
+    order: 2;
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(3.4rem, 18vw, 5.4rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--crema);
+    margin-bottom: 0;
+}
+.tema-divertido .portada-frase { order: 0; }
+.tema-divertido .portada-fecha-wrap { order: 3; margin-top: 18px; }
 .tema-divertido .portada-fecha {
     display: inline-block;
-    padding: 8px 18px;
-    border: 2.5px solid var(--ink);
-    border-radius: 999px;
-    background: var(--pop-celeste);
-    color: var(--ink);
+    padding: 12px 22px;
+    border-radius: 26px 20px 24px 18px;
+    background: var(--sol);
+    color: var(--tinta);
+    font-family: var(--fuente-textos);
+    font-size: 1rem;
     font-weight: 800;
-    letter-spacing: 1.5px;
-    transform: rotate(1.5deg);
+    letter-spacing: 0.02em;
+    text-transform: none;
+    transform: rotate(-2deg);
 }
-.tema-divertido .scroll-hint span { color: var(--ink); font-weight: 800; }
-.tema-divertido .scroll-hint .scroll-arrow { border-color: var(--ink); border-width: 3px; }
+
+/* Indicador de scroll: abajo a la derecha (a la izquierda está el lanzapapeles) */
+.tema-divertido .portada-scroll-hint { left: auto; right: 22px; transform: none; }
+.tema-divertido .portada-scroll-hint.anim-escalonada { transform: translateY(20px); }
+.tema-divertido .portada-wrapper.iniciar-magia .portada-scroll-hint.anim-escalonada { animation-name: divEntrarHint; }
+@keyframes divEntrarHint {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: none; }
+}
+.tema-divertido .portada-scroll-hint span { color: var(--crema); font-weight: 700; }
+.tema-divertido .portada-scroll-hint .scroll-arrow { border-color: var(--crema); border-width: 2px; }
+
+/* Con foto Deluxe: polaroid inclinada con cinta, arriba a la izquierda */
+.tema-divertido .portada--con-foto {
+    justify-content: flex-start;
+    padding-top: calc(clamp(96px, 13svh, 120px) + min(56vw, 230px) + 90px);
+}
+.tema-divertido .portada-foto {
+    inset: auto;
+    top: clamp(96px, 13svh, 120px);
+    left: 7%;
+    width: min(50vw, 210px);
+    padding: 10px 10px 36px;
+    background: var(--crema);
+    border-radius: 4px 6px 3px 5px;
+    box-shadow: 0 14px 30px rgba(20, 28, 80, 0.35);
+    transform: rotate(-5deg);
+    z-index: 1;
+}
+.tema-divertido .portada-foto img { height: min(56vw, 230px); }
+.tema-divertido .portada-foto::after {
+    inset: auto;
+    top: -12px;
+    left: 30%;
+    width: 76px;
+    height: 24px;
+    background: var(--sol);
+    opacity: 0.85;
+    border-radius: 2px 5px 3px 4px;
+    transform: rotate(4deg);
+}
+
+
+/* ── Módulos: un color de fondo por sección, manchas y decoración alternada ── */
+.tema-divertido .modulo-fullscreen:not(.portada-wrapper) {
+    background:
+        url('../img/decoracion/divertido/manchas.svg') center / 100% 100% no-repeat,
+        var(--fondo-modulo, var(--fondo-sol));
+}
+.tema-divertido .modulo-fullscreen:nth-of-type(4n+2) { --fondo-modulo: var(--fondo-sol); }
+.tema-divertido .modulo-fullscreen:nth-of-type(4n+3) { --fondo-modulo: var(--fondo-durazno); }
+.tema-divertido .modulo-fullscreen:nth-of-type(4n+4) { --fondo-modulo: var(--fondo-lavanda); }
+.tema-divertido .modulo-fullscreen:nth-of-type(4n+5) { --fondo-modulo: var(--fondo-agua); }
+
+.tema-divertido .modulo-fullscreen:not(.portada-wrapper)::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+}
+/* Guirnalda arriba (secciones pares de la serie) */
+.tema-divertido .modulo-fullscreen:nth-of-type(2n):not(.portada-wrapper) { padding-top: clamp(104px, 15vh, 130px); }
+.tema-divertido .modulo-fullscreen:nth-of-type(2n):not(.portada-wrapper)::after {
+    inset: 0 0 auto 0;
+    aspect-ratio: 390 / 100;
+    max-height: 130px;
+    background: url('../img/decoracion/divertido/guirnalda-oscuro.svg') top center / 100% auto no-repeat;
+}
+/* Globos en la esquina (secciones impares) */
+.tema-divertido .modulo-fullscreen:nth-of-type(2n+3)::after {
+    top: 6px;
+    right: -16px;
+    width: min(24vw, 104px);
+    aspect-ratio: 200 / 320;
+    background: url('../img/decoracion/divertido/globos-oscuro.svg') center / contain no-repeat;
+    opacity: 0.95;
+}
 
 
 /* ── Componentes ── */
 .tema-divertido .modulo-titulo {
-    font-weight: 700;
-    text-shadow: 2px 2px 0 var(--pop-amarillo);
+    font-size: clamp(2.8rem, 13vw, 4.2rem);
+    line-height: 1;
+    color: var(--tinta);
 }
-.tema-divertido .eyebrow {
-    display: inline-block;
-    padding: 5px 14px;
-    border: 2.5px solid var(--ink);
-    border-radius: 18px;
-    background: var(--pop-amarillo);
-    color: var(--ink);
-    font-weight: 800;
-    margin-bottom: 16px;
-}
-.tema-divertido .modulo-texto { font-weight: 600; color: var(--text-mid); }
+.tema-divertido .eyebrow { font-weight: 700; color: var(--tinta); }
+.tema-divertido .modulo-texto { font-size: 1.05rem; font-weight: 500; line-height: 1.6; color: var(--tinta-2); }
 
+/* Ícono: mancha cobalto con el dibujo en crema */
 .tema-divertido .icono-modulo {
     width: 84px;
     height: 84px;
-    padding: 16px;
-    border: 2.5px solid var(--ink);
-    border-radius: 50%;
-    background: var(--pop-amarillo);
-    color: var(--ink);
-    box-shadow: 4px 4px 0 var(--ink);
+    padding: 18px;
+    border-radius: 55% 45% 52% 48% / 46% 56% 44% 54%;
+    background: var(--cobalto);
+    color: var(--crema);
+    transform: rotate(-4deg);
 }
-.tema-divertido .modulo-regalos .icono-modulo,
-.tema-divertido .modulo-playlist .icono-modulo { width: 92px; height: 92px; color: var(--ink); }
 
 .tema-divertido .divisor-decorativo::before,
-.tema-divertido .divisor-decorativo::after { height: 0; background: none; border-top: 3px dotted var(--ink); }
-.tema-divertido .divisor-decorativo span { color: var(--pop-rosa); }
+.tema-divertido .divisor-decorativo::after { background: none; }
+.tema-divertido .divisor-decorativo span { font-size: 0; }
+.tema-divertido .divisor-decorativo span::before {
+    content: '';
+    display: block;
+    width: 22px;
+    height: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-10 -10 20 20'%3E%3Cpath d='M0 -9 C 2 -3 3 -3 9 -2 C 4 1 4 2 5 8 C 1 5 -1 5 -5 8 C -4 2 -4 1 -9 -2 C -3 -3 -2 -3 0 -9 Z' fill='%23f27a62'/%3E%3C/svg%3E") center / contain no-repeat;
+}
 
-.tema-divertido .btn:active,
-.tema-divertido .btn-accion:active,
-.tema-divertido .rsvp-submit:active,
-.tema-divertido .btn-muro-submit:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+/* Cajas: crema, esquinas desparejas, apenas torcidas */
+.tema-divertido .caja-vidrio,
+.tema-divertido .regalos-caja-bancaria,
+.tema-divertido .dress-code-texto { transform: rotate(-1.2deg); }
+
+/* Botones: píldora navy rellena; el envío de formularios va en coral */
 .tema-divertido .btn,
 .tema-divertido .btn-accion,
-.tema-divertido .rsvp-submit,
-.tema-divertido .btn-muro-submit,
-.tema-divertido .btn--gold { background: var(--pop-amarillo); color: var(--ink); border-color: var(--ink); }
+.tema-divertido .btn--gold {
+    background: var(--tinta);
+    color: var(--crema);
+    border-color: transparent;
+}
+.tema-divertido .btn svg,
+.tema-divertido .btn-accion svg { stroke: var(--crema); }
 .tema-divertido .btn:hover,
 .tema-divertido .btn-accion:hover,
-.tema-divertido .rsvp-submit:hover,
-.tema-divertido .btn-muro-submit:hover,
-.tema-divertido .btn--gold:hover { background: var(--pop-rosa); color: #fff; border-color: var(--ink); }
-.tema-divertido .btn--whatsapp { background: #d7f9e4; color: #0b5d3b; }
-.tema-divertido .btn--spotify { background: #d5f5df; color: #0c6b30; }
-.tema-divertido .btn--mp { background: #d8f1fc; color: #04577e; }
-.tema-divertido .btn--secundario { background: #fff; color: var(--ink); border-color: var(--ink); }
-.tema-divertido .btn--secundario:hover { background: var(--bg-secundario); color: var(--ink); }
-.tema-divertido .btn--copiar { background: #fff; color: var(--ink); }
-.tema-divertido .btn--copiar:hover { background: var(--pop-celeste); color: var(--ink); }
-.tema-divertido .btn--mp-disabled { background: #f3f1f9; box-shadow: none; }
+.tema-divertido .btn--gold:hover { background: var(--cobalto); color: var(--crema); }
 
-/* Opciones pill (Asistiré / No asistiré) */
+.tema-divertido .rsvp-submit,
+.tema-divertido .btn-muro-submit {
+    background: var(--coral);
+    color: var(--tinta);
+    border-color: transparent;
+    border-radius: 32px 26px 30px 24px;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+.tema-divertido .rsvp-submit svg,
+.tema-divertido .btn-muro-submit svg { stroke: var(--tinta); }
+.tema-divertido .rsvp-submit:hover,
+.tema-divertido .btn-muro-submit:hover { background: var(--sol); color: var(--tinta); transform: rotate(-1deg); }
+.tema-divertido .rsvp-submit:hover svg,
+.tema-divertido .btn-muro-submit:hover svg { stroke: var(--tinta); }
+
+.tema-divertido .btn--whatsapp,
+.tema-divertido .btn--spotify,
+.tema-divertido .btn--mp,
+.tema-divertido .btn--secundario { background: var(--crema); color: var(--tinta); border-color: transparent; }
+/* Copiar va dentro de una caja crema: navy para que se distinga */
+.tema-divertido .btn--copiar { background: var(--tinta); color: var(--crema); border-color: transparent; font-size: 0.95rem; }
+.tema-divertido .btn--copiar svg { stroke: var(--crema); fill: var(--crema); }
+.tema-divertido .btn--copiar:hover { background: var(--cobalto); }
+.tema-divertido .btn--whatsapp svg { fill: currentColor; stroke: none; }
+.tema-divertido .btn--secundario svg { stroke: var(--tinta); }
+.tema-divertido .btn--whatsapp:hover,
+.tema-divertido .btn--spotify:hover,
+.tema-divertido .btn--mp:hover,
+.tema-divertido .btn--secundario:hover { background: var(--tinta); color: var(--crema); }
+.tema-divertido .btn--secundario:hover svg { stroke: var(--crema); }
+.tema-divertido .btn--mp-disabled { background: rgba(255, 246, 230, 0.6); color: var(--tinta-2); }
+
+/* Opciones (Asistiré / No asistiré): manchas crema; elegida = navy */
 .tema-divertido .campo-form-opciones label,
 .tema-divertido .rsvp-opcion label,
 .tema-divertido .rsvp-opcion-item label {
-    background: #fff;
-    border: 2.5px solid var(--ink);
-    color: var(--ink);
-    font-size: 0.9rem;
-    font-weight: 800;
-    letter-spacing: 0.3px;
+    background: var(--crema);
+    border-color: transparent;
+    border-radius: 26px 20px 28px 18px;
+    padding: 14px 24px;
+    color: var(--tinta);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0;
     text-transform: none;
-    box-shadow: 3px 3px 0 var(--ink);
 }
 .tema-divertido .campo-form-opciones input:checked + label,
 .tema-divertido .rsvp-opcion input:checked + label,
-.tema-divertido .rsvp-opcion-item input:checked + label {
-    background: var(--pop-menta);
-    border-color: var(--ink);
-    color: var(--ink);
-    transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0 var(--ink);
-}
+.tema-divertido .rsvp-opcion-item input:checked + label { transform: rotate(-2deg); }
 
+/* Formularios sin caja: los campos crema van directo sobre el color de la sección */
+.tema-divertido .mod-rsvp-interno .rsvp-campos,
+.tema-divertido .rsvp-datos-wrap,
+.tema-divertido .form-muro,
+.tema-divertido .playlist-campos,
+.tema-divertido .pago-form form { background: transparent; }
+
+/* Campos */
 .tema-divertido .campo-form label,
 .tema-divertido .rsvp-field label,
 .tema-divertido .pago-field label,
 .tema-divertido .pago-file-label {
-    color: var(--ink);
-    font-weight: 800;
-    letter-spacing: 1.2px;
+    color: var(--tinta);
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 0.95rem;
 }
 .tema-divertido .campo-form input:focus,
 .tema-divertido .campo-form textarea:focus,
 .tema-divertido .campo-form select:focus,
 .tema-divertido .rsvp-field input:focus,
 .tema-divertido .rsvp-field textarea:focus,
-.tema-divertido .rsvp-field select:focus {
-    border-color: var(--ink);
-    box-shadow: 3px 3px 0 var(--pop-rosa);
-}
+.tema-divertido .rsvp-field select:focus { outline: 2px solid var(--tinta); outline-offset: 2px; }
+.tema-divertido ::placeholder { color: #5b6390; }
 
-/* Superficies: leve inclinación tipo pegatina */
+/* ── Módulos puntuales ── */
+.tema-divertido .lt-contenedor::before { background: rgba(31, 42, 90, 0.22); width: 3px; }
+.tema-divertido .mod-linea-tiempo.horizontal .lt-contenedor::before { height: 3px; width: auto; }
+.tema-divertido .lt-punto { border: 0; background: var(--coral); border-radius: 55% 45% 50% 50%; box-shadow: none; }
+.tema-divertido .lt-fecha { background: var(--sol); border-color: transparent; color: var(--tinta); font-weight: 800; border-radius: 18px 14px 20px 12px; }
+.tema-divertido .lt-foto { border-radius: 22px 16px 24px 14px; }
 .tema-divertido .lt-item:nth-child(odd)  { rotate: -1deg; }
 .tema-divertido .lt-item:nth-child(even) { rotate: 1deg; }
 .tema-divertido .mod-linea-tiempo.horizontal .lt-item { rotate: 0deg; }
-.tema-divertido .lt-contenedor::before { width: 4px; background: repeating-linear-gradient(to bottom, var(--ink) 0 8px, transparent 8px 16px); }
-.tema-divertido .mod-linea-tiempo.horizontal .lt-contenedor::before { height: 4px; background: repeating-linear-gradient(to right, var(--ink) 0 8px, transparent 8px 16px); }
-.tema-divertido .lt-punto { width: 18px; height: 18px; left: -35px; border: 3px solid var(--ink); background: var(--pop-rosa); box-shadow: none; }
-.tema-divertido .lt-fecha { background: var(--pop-celeste); border-color: var(--ink); color: var(--ink); font-weight: 800; }
-.tema-divertido .lt-foto { border: 2.5px solid var(--ink); border-radius: 14px; }
-.tema-divertido .lt-nav-btn { border-width: 2.5px; border-color: var(--ink); color: var(--ink); background: var(--pop-amarillo); box-shadow: 3px 3px 0 var(--ink); }
-.tema-divertido .lt-nav-btn:hover:not(:disabled) { background: var(--pop-rosa); color: #fff; }
-
-.tema-divertido .dress-code-tipo { color: var(--pop-rosa); }
-.tema-divertido .dress-code-texto p { font-weight: 600; }
-.tema-divertido .pago-tarifas-titulo { background: var(--pop-amarillo); color: var(--ink); }
-.tema-divertido .pago-banco-bloque { background: #fff1c7; border-color: var(--ink); }
-.tema-divertido .rsvp-fecha-limite { background: #fff1c7; border: 2.5px solid var(--ink); }
-.tema-divertido .muro-item { border-radius: 18px; box-shadow: 3px 3px 0 var(--ink); }
-.tema-divertido .muro-mensajes { padding: 4px 8px 8px 2px; }
+.tema-divertido .lt-nav-btn { border: 0; background: var(--tinta); color: var(--crema); }
+.tema-divertido .lt-nav-btn:hover:not(:disabled) { background: var(--cobalto); }
+.tema-divertido .dress-code-tipo { color: var(--tinta); font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 700; }
+.tema-divertido .pago-tarifas-titulo { background: var(--sol); color: var(--tinta); }
+.tema-divertido .pago-banco-bloque { background: rgba(255, 246, 230, 0.7); border-color: transparent; }
+.tema-divertido .rsvp-fecha-limite { background: var(--crema); border: 0; border-radius: 18px 24px 16px 22px; }
+.tema-divertido .muro-item:nth-child(odd)  { rotate: -0.8deg; }
+.tema-divertido .muro-item:nth-child(even) { rotate: 0.8deg; }
 .tema-divertido .estado-titulo,
-.tema-divertido .mod-rsvp-interno .rsvp-mensaje-exito h4 { color: var(--pop-rosa); font-weight: 700; }
-.tema-divertido .estado-icono { animation: brincar 1.6s ease-in-out infinite; }
-
-.tema-divertido .foto-item { border: 2.5px solid var(--ink); border-radius: 16px; }
-.tema-divertido .galeria-grid { gap: 12px; }
+.tema-divertido .mod-rsvp-interno .rsvp-mensaje-exito h4 { color: var(--tinta); font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 800; }
+.tema-divertido .mod-rsvp-interno h3 { font-size: clamp(2.6rem, 12vw, 3.8rem); line-height: 1; }
+.tema-divertido .foto-item { border-radius: 22px 16px 24px 14px; }
 .tema-divertido .foto-item:nth-child(odd)  { rotate: -1.2deg; }
 .tema-divertido .foto-item:nth-child(even) { rotate: 1.2deg; }
-.tema-divertido .foto-item::after { background: var(--pop-rosa); }
-.tema-divertido .ilustracion-asomada { color: var(--pop-rosa); opacity: 0.9; z-index: 1; }
-
-.tema-divertido .btn-musica-flotante {
-    background: var(--pop-amarillo);
-    border: 2.5px solid var(--ink);
-    color: var(--ink);
-    box-shadow: 3px 3px 0 var(--ink);
-}
-.tema-divertido .btn-musica-flotante:hover { background: var(--pop-rosa); color: #fff; }
-.tema-divertido .btn-musica-flotante.reproduciendo { animation: brincar 1.2s ease-in-out infinite; }
-
-@media (max-width: 480px) {
-    .tema-divertido { --surface-shadow: 4px 4px 0 var(--ink); --marco-shadow: 6px 6px 0 var(--ink); }
-}
+.tema-divertido .foto-item::after { background: var(--cobalto); }
+.tema-divertido .ilustracion-asomada { color: var(--crema); opacity: 0.9; z-index: 1; }
+.tema-divertido .btn-musica-flotante { background: var(--sol); border: 0; color: var(--tinta); box-shadow: 0 6px 16px rgba(31, 42, 90, 0.25); }
+.tema-divertido .btn-musica-flotante:hover { background: var(--coral); }
+.tema-divertido .btn-musica-flotante.reproduciendo { animation: flotarGlobos 1.4s ease-in-out infinite alternate; }
 
 @media (prefers-reduced-motion: reduce) {
-    .tema-divertido .portada-wrapper::before,
-    .tema-divertido .portada-fondo-animado,
-    .tema-divertido .misterio-texto,
-    .tema-divertido .estado-icono { animation: none; }
-    .tema-divertido .misterio-texto { opacity: 1; }
+    .tema-divertido .portada-wrapper::after,
+    .tema-divertido .btn-musica-flotante.reproduciendo { animation: none; }
+    .tema-divertido .portada-scroll-hint.anim-escalonada { transform: none; }
 }

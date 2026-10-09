@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/conexion.php';
 require_once __DIR__ . '/config/modulos.php';
+require_once __DIR__ . '/helpers/foto_portada.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -93,7 +94,7 @@ foreach (modulos_config() as $columna => $modulo) {
     foreach ($modulo['campos'] as $campo) {
         $nombre = $campo['name'];
         if (isset($campos_ya_procesados[$nombre])) continue;
-        if (in_array(($campo['type'] ?? ''), ['file_book', 'info_aviso'], true)) continue;
+        if (in_array(($campo['type'] ?? ''), ['file_book', 'file_portada', 'info_aviso'], true)) continue;
         $campos_set[] = "$nombre = ?";
         $valores[]    = (isset($_POST[$nombre]) && trim($_POST[$nombre]) !== '')
                         ? trim($_POST[$nombre]) : null;
@@ -126,6 +127,17 @@ if (!empty($_FILES['fotos_book']['name'][0])) {
     }
 }
 
+// Foto de portada (módulo Deluxe): solo si el módulo queda activo
+$foto_con_error = false;
+if (in_array('mod_foto_portada', $modulos_elegidos, true)) {
+    $foto = momentia_procesar_foto_portada($tarjeta);
+    if ($foto['cambio']) {
+        $campos_set[] = 'foto_portada = ?';
+        $valores[]    = $foto['ruta'];
+    }
+    $foto_con_error = $foto['error'] !== null;
+}
+
 // ── 6.5. Textos personalizados ──
 $custom_txt_array = $_POST['custom_txt'] ?? [];
 $filtered_custom_txt = array_filter($custom_txt_array, function($val) {
@@ -142,7 +154,7 @@ try {
     $sql  = 'UPDATE tarjetas SET ' . implode(', ', $campos_set) . ' WHERE id_tarjeta = ? AND id_cliente = ?';
     $stmt = $pdo->prepare($sql);
     $stmt->execute($valores);
-    header('Location: dashboard.php?mensaje=tarjeta_actualizada');
+    header('Location: dashboard.php?mensaje=' . ($foto_con_error ? 'foto_no_guardada' : 'tarjeta_actualizada'));
     exit;
 } 
 catch (PDOException $e) {

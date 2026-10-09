@@ -29,6 +29,30 @@ $config_modulos = [
 
     'modulos' => [
 
+        'mod_foto_portada' => [
+            'titulo'        => 'Foto de portada (Deluxe)',
+            'descripcion'   => 'Tu foto personal como fondo de la portada, integrada al estilo elegido.',
+            'plantilla'     => '', // no es una sección: la renderiza base_portada.php
+            'orden'         => 1,
+            'seleccionable' => true,
+            'deluxe'        => true,
+            'eventos'       => [
+                'boda', 'cumpleaños', 'bautismo', 'egreso', 'deportivo', 'corporativo',
+                '15 años', 'baby shower', 'revelación de género', 'comunión', 'confirmación',
+                'aniversario', 'inauguración', 'despedida', 'reunión familia',
+                'fiestas varias', 'premiación / reconocimiento',
+            ],
+            'campos' => [
+                [
+                    'name'     => 'foto_portada',
+                    'label'    => 'Foto de portada',
+                    'type'     => 'file_portada',
+                    'required' => false,
+                    'help'     => 'JPG, PNG o WEBP de hasta 8 MB. Funciona mejor una foto vertical, con las caras en la mitad superior.',
+                ],
+            ],
+        ],
+
         'mod_musica' => [
             'titulo'        => 'Música de Fondo',
             'descripcion'   => 'Ambientá la tarjeta con un link de YouTube.',
@@ -395,7 +419,7 @@ function campos_datos_para_tarjeta(array $tarjeta): array
         if ($columna === 'mod_rsvp_whatsapp') continue;
         if (empty($tarjeta[$columna])) continue;
         foreach ($modulo['campos'] as $campo) {
-            if (in_array(($campo['type'] ?? ''), ['file_book', 'info_aviso'], true)) continue;
+            if (in_array(($campo['type'] ?? ''), ['file_book', 'file_portada', 'info_aviso'], true)) continue;
             $campos[] = $campo['name'];
         }
     }

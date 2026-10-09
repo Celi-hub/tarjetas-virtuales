@@ -1,0 +1,3 @@
+# Fotos de portada que suben los clientes (se conserva el .htaccess de la carpeta)
+uploads/portadas/*
+!uploads/portadas/.htaccess

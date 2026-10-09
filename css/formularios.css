@@ -865,3 +865,38 @@ small {
     align-items: center;
     margin-top: 24px;
 }
+
+/* ── Foto de portada (módulo Deluxe) ── */
+.badge-deluxe {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #2a2724;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+.foto-portada-actual {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 6px 0 10px;
+}
+.foto-portada-actual img {
+    width: 96px;
+    height: 128px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+}
+.foto-portada-quitar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 400;
+    cursor: pointer;
+}

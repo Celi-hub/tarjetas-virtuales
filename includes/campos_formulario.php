@@ -42,6 +42,28 @@ function render_campo_formulario(array $campo, ?string $valor = null): void
         return;
     }
 
+    if ($type === 'file_portada') {
+        $tiene_foto = $valor !== '' && strpos($valor, 'uploads/portadas/') === 0;
+        ?>
+        <div class="form-group form-group--foto-portada">
+            <label for="id_foto_portada"><?php echo htmlspecialchars($label); ?> <span class="badge-deluxe">Deluxe</span></label>
+            <?php if ($tiene_foto): ?>
+                <div class="foto-portada-actual">
+                    <img src="<?php echo htmlspecialchars($valor); ?>" alt="Foto de portada actual" width="96" height="128">
+                    <label class="foto-portada-quitar">
+                        <input type="checkbox" name="quitar_foto_portada" value="1"> Quitar la foto actual
+                    </label>
+                </div>
+            <?php endif; ?>
+            <input type="file" name="foto_portada" id="id_foto_portada" accept="image/jpeg,image/png,image/webp">
+            <?php if (!empty($campo['help'])): ?>
+                <small class="form-help-text"><?php echo htmlspecialchars($campo['help']); ?></small>
+            <?php endif; ?>
+        </div>
+        <?php
+        return;
+    }
+
     if ($type === 'file_book') {
         ?>
         <div class="form-group">

@@ -104,7 +104,8 @@ INSERT INTO `costos` (`id_costo`, `modulo_key`, `nombre_amigable`, `precio`) VAL
 (11, 'mod_ubi_calen', 'Ubicación y calendario', 800.00),
 (12, 'mod_book_fotos', 'Book de fotos', 1200.00),
 (13, 'mod_pagar_evento', 'Pagar evento', 1400.00),
-(14, 'Mod_rsvp_whatsapp', 'Confirmación por whatsapp', 600.00);
+(14, 'Mod_rsvp_whatsapp', 'Confirmación por whatsapp', 600.00),
+(15, 'mod_foto_portada', 'Foto de portada (Deluxe)', 2500.00);
 
 -- --------------------------------------------------------
 
@@ -384,7 +385,9 @@ CREATE TABLE `tarjetas` (
   `momento2_fecha` date DEFAULT NULL,
   `momento2_hora` time DEFAULT NULL,
   `momento2_direccion_maps` text DEFAULT NULL,
-  `mod_ubi_calen` tinyint(1) DEFAULT NULL
+  `mod_ubi_calen` tinyint(1) DEFAULT NULL,
+  `mod_foto_portada` tinyint(1) DEFAULT 0,
+  `foto_portada` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -554,7 +557,7 @@ ALTER TABLE `config_pagos`
 -- AUTO_INCREMENT de la tabla `costos`
 --
 ALTER TABLE `costos`
-  MODIFY `id_costo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_costo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `estilos_visuales`

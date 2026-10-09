@@ -253,8 +253,9 @@ $msg = $_GET['msg'] ?? null;
                                 </td>
                                 <td>
                                     <?php if (!empty($pago['comprobante_img'])): ?>
-                                        <a href="uploads/comprobantes/<?php echo htmlspecialchars($pago['comprobante_img']); ?>"
-                                           target="_blank" class="btn-ver-comp">
+                                        <?php // guardar_pago.php guarda la ruta con el prefijo "uploads/comprobantes/": basename() sirve para ese formato y para nombres sueltos, y no deja salir de la carpeta ?>
+                                        <a href="uploads/comprobantes/<?php echo rawurlencode(basename($pago['comprobante_img'])); ?>"
+                                           target="_blank" rel="noopener noreferrer" class="btn-ver-comp">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
                                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                                                 <circle cx="12" cy="12" r="3"/>

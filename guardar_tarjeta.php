@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/conexion.php';
 require_once __DIR__ . '/config/modulos.php';
+require_once __DIR__ . '/helpers/foto_portada.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -82,6 +83,17 @@ if (!empty($tarjeta['mod_book_fotos']) && !empty($_FILES['fotos_book']['name'][0
     }
 }
 
+// Foto de portada (módulo Deluxe): solo si el módulo queda activo
+$foto_con_error = false;
+if (!empty($tarjeta['mod_foto_portada'])) {
+    $foto = momentia_procesar_foto_portada($tarjeta);
+    if ($foto['cambio']) {
+        $campos_set[] = 'foto_portada = ?';
+        $valores[]    = $foto['ruta'];
+    }
+    $foto_con_error = $foto['error'] !== null;
+}
+
 $valores[] = $id_tarjeta;
 $valores[] = $id_usuario;
 
@@ -90,7 +102,7 @@ try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute($valores);
 
-    header('Location: dashboard.php?mensaje=tarjeta_creada');
+    header('Location: dashboard.php?mensaje=' . ($foto_con_error ? 'foto_no_guardada' : 'tarjeta_creada'));
     exit;
 } catch (PDOException $e) {
     error_log('Error al guardar tarjeta: ' . $e->getMessage());

@@ -30,6 +30,36 @@ try {
     $error_carga  = true;
 }
 
+// Token para el formulario de eliminación (lo valida eliminar_tarjeta.php)
+if (empty($_SESSION['csrf_token_eliminar_tarjeta'])) {
+    $_SESSION['csrf_token_eliminar_tarjeta'] = bin2hex(random_bytes(32));
+}
+$csrf_eliminar = $_SESSION['csrf_token_eliminar_tarjeta'];
+
+// Qué se pierde al eliminar cada tarjeta: el modal lo muestra como advertencia.
+// Consulta aparte para que, si falla, el panel siga cargando (el modal cae a un aviso genérico).
+$datos_por_tarjeta = [];
+if (!empty($mis_tarjetas)) {
+    try {
+        $stmtDatos = $pdo->prepare("
+            SELECT t.id_tarjeta,
+                   (SELECT COUNT(*) FROM rsvp_respuestas      WHERE tarjeta_id = t.id_tarjeta) AS rsvp,
+                   (SELECT COUNT(*) FROM muro_deseos          WHERE tarjeta_id = t.id_tarjeta) AS muro,
+                   (SELECT COUNT(*) FROM playlist_sugerencias WHERE tarjeta_id = t.id_tarjeta) AS playlist,
+                   (SELECT COUNT(*) FROM pagos_evento         WHERE tarjeta_id = t.id_tarjeta) AS pagos,
+                   (SELECT COUNT(*) FROM linea_tiempo_hitos   WHERE tarjeta_id = t.id_tarjeta) AS hitos
+            FROM tarjetas t
+            WHERE t.id_cliente = ?
+        ");
+        $stmtDatos->execute([$id_usuario]);
+        foreach ($stmtDatos->fetchAll(PDO::FETCH_ASSOC) as $fila) {
+            $datos_por_tarjeta[(int)$fila['id_tarjeta']] = $fila;
+        }
+    } catch (PDOException $e) {
+        error_log('Error al contar datos de tarjetas en dashboard.php: ' . $e->getMessage());
+    }
+}
+
 // Mapeo de íconos SVG inline (accesibles, escalables, sin dependencias)
 function icono_svg(string $nombre, string $clase = ''): string {
     $iconos = [
@@ -65,18 +95,38 @@ function icono_svg(string $nombre, string $clase = ''): string {
 <?php include_once 'header.php'; ?>
 
 <!-- Modal de confirmación de eliminación (reemplaza el confirm() del browser) -->
-<div class="modal-overlay" id="modalEliminar" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
-    <div class="modal-box">
+<div class="modal-overlay" id="modalEliminar" role="dialog" aria-modal="true" aria-labelledby="modalTitulo" aria-describedby="modalDescripcion">
+    <form class="modal-box" method="POST" action="eliminar_tarjeta.php" id="modalEliminarForm">
+        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_eliminar); ?>">
+        <input type="hidden" name="id_tarjeta" id="modalIdTarjeta" value="">
+
         <div class="modal-icon">
             <?php echo icono_svg('eliminar'); ?>
         </div>
         <h3 id="modalTitulo">¿Eliminás esta invitación?</h3>
-        <p id="modalDescripcion">Esta acción no se puede deshacer. La invitación y todos sus datos se borrarán permanentemente.</p>
-        <div class="modal-actions">
-            <button class="btn-modal-cancelar" onclick="cerrarModal()">Cancelar</button>
-            <a href="#" id="modalConfirmarLink" class="btn-modal-confirmar">Sí, eliminar</a>
+        <p id="modalDescripcion">Esta acción no se puede deshacer.</p>
+
+        <div class="modal-riesgos">
+            <p class="modal-riesgos-titulo">Se va a borrar para siempre:</p>
+            <ul id="modalRiesgos"></ul>
+            <p class="modal-riesgo-destacado" id="modalRiesgoActiva" hidden>
+                Esta invitación ya está <strong>activa</strong>: el link que compartiste con tus invitados va a dejar de funcionar.
+            </p>
+            <p class="modal-riesgo-destacado" id="modalRiesgoPagos" hidden>
+                Tiene <strong>comprobantes de pago</strong> de tus invitados. Si los necesitás, descargalos desde "Pagos Recibidos" antes de eliminar.
+            </p>
         </div>
-    </div>
+
+        <label class="modal-confirmacion">
+            <input type="checkbox" name="confirmo_eliminacion" value="1" id="modalConfirmo">
+            Entiendo que no se puede recuperar
+        </label>
+
+        <div class="modal-actions">
+            <button type="button" class="btn-modal-cancelar" id="modalCancelar">Cancelar</button>
+            <button type="submit" class="btn-modal-confirmar" id="modalConfirmar" disabled>Sí, eliminar</button>
+        </div>
+    </form>
 </div>
 
 <div class="dashboard-body">
@@ -85,16 +135,23 @@ function icono_svg(string $nombre, string $clase = ''): string {
         <!-- ALERTAS DEL SISTEMA (usando clases en vez de inline styles) -->
         <?php
         $alertas = [
-            'eliminada'          => ['tipo' => 'exito',    'texto' => 'La invitación fue eliminada correctamente.'],
+            'eliminada'          => ['tipo' => 'exito',    'texto' => 'La invitación y todos sus archivos fueron eliminados correctamente.'],
+            'eliminada_con_avisos'=> ['tipo' => 'error',   'texto' => 'La invitación fue eliminada, pero algunos archivos no se pudieron borrar del servidor. Quedó registrado para revisarlo.'],
+            'sin_confirmar'      => ['tipo' => 'error',    'texto' => 'Para eliminar una invitación tenés que confirmar que entendés que no se puede recuperar.'],
+            'error_csrf'         => ['tipo' => 'error',    'texto' => 'La sesión del formulario expiró. Recargá la página e intentá de nuevo.'],
+            'no_autorizado'      => ['tipo' => 'error',    'texto' => 'No se encontró esa invitación o no tenés permiso para eliminarla.'],
+            'id_invalido'        => ['tipo' => 'error',    'texto' => 'No se encontró esa invitación.'],
+            'error_eliminar'     => ['tipo' => 'error',    'texto' => 'No pudimos eliminar la invitación. No se borró nada; intentá de nuevo.'],
             'tarjeta_creada'     => ['tipo' => 'exito',    'texto' => '¡Tu invitación se creó con éxito! Ya podés completar los datos.'],
             'tarjeta_actualizada'=> ['tipo' => 'exito',    'texto' => '¡Tu invitación se actualizó con éxito!'],
+            'foto_no_guardada'   => ['tipo' => 'error',    'texto' => 'Guardamos tus datos, pero la foto de portada no se pudo subir. Usá una imagen JPG, PNG o WEBP de hasta 8 MB.'],
             'tarjeta_invalida'   => ['tipo' => 'error',    'texto' => 'No se encontró esa invitación.'],
             'error_carga'        => ['tipo' => 'error',    'texto' => 'Hubo un problema al cargar tus invitaciones. Intentá de nuevo.'],
         ];
 
         // Compatibilidad con param viejo 'msg' y nuevo 'mensaje'
-        $param = $_GET['mensaje'] ?? $_GET['msg'] ?? null;
-        if ($param && isset($alertas[$param])):
+        $param = $_GET['mensaje'] ?? $_GET['msg'] ?? $_GET['error'] ?? null;
+        if (is_string($param) && isset($alertas[$param])):
             $alerta = $alertas[$param];
         ?>
             <div class="dash-alerta dash-alerta-<?php echo $alerta['tipo']; ?>" role="alert">
@@ -218,9 +275,29 @@ function icono_svg(string $nombre, string $clase = ''): string {
                                     <?php echo icono_svg('compartir'); ?> Compartir
                                 </a>
                             <?php endif; ?>
+                            <?php
+                            // Resumen de lo que se pierde (null = no se pudo contar: el modal avisa en genérico)
+                            $datos_tarjeta = $datos_por_tarjeta[$id] ?? null;
+                            if ($datos_tarjeta !== null) {
+                                $datos_tarjeta['fotos'] = count(glob(__DIR__ . '/uploads/book/' . $id . '/*') ?: [])
+                                                        + (empty($tarjeta['foto_portada']) ? 0 : 1);
+                            }
+                            ?>
                             <button
                                 class="action-btn btn-eliminar"
-                                onclick="abrirModal(<?php echo $id; ?>, '<?php echo addslashes($titulo); ?>')"
+                                data-eliminar-id="<?php echo $id; ?>"
+                                data-eliminar-titulo="<?php echo $titulo; ?>"
+                                data-eliminar-activa="<?php echo $es_pagada ? '1' : '0'; ?>"
+                                <?php if ($datos_tarjeta !== null): ?>
+                                data-eliminar-datos="<?php echo htmlspecialchars(json_encode([
+                                    'rsvp'     => (int)$datos_tarjeta['rsvp'],
+                                    'muro'     => (int)$datos_tarjeta['muro'],
+                                    'playlist' => (int)$datos_tarjeta['playlist'],
+                                    'pagos'    => (int)$datos_tarjeta['pagos'],
+                                    'hitos'    => (int)$datos_tarjeta['hitos'],
+                                    'fotos'    => (int)$datos_tarjeta['fotos'],
+                                ])); ?>"
+                                <?php endif; ?>
                                 title="Eliminar invitación"
                                 type="button"
                             >
@@ -284,30 +361,88 @@ function icono_svg(string $nombre, string $clase = ''): string {
 
 <script>
 // ── Modal de eliminación ──
-function abrirModal(id, titulo) {
-    const overlay = document.getElementById('modalEliminar');
-    const link    = document.getElementById('modalConfirmarLink');
-    const desc    = document.getElementById('modalDescripcion');
+(function () {
+    const overlay    = document.getElementById('modalEliminar');
+    const form       = document.getElementById('modalEliminarForm');
+    const inputId    = document.getElementById('modalIdTarjeta');
+    const desc       = document.getElementById('modalDescripcion');
+    const lista      = document.getElementById('modalRiesgos');
+    const avisoActiva= document.getElementById('modalRiesgoActiva');
+    const avisoPagos = document.getElementById('modalRiesgoPagos');
+    const confirmo   = document.getElementById('modalConfirmo');
+    const btnOk      = document.getElementById('modalConfirmar');
+    const btnCancel  = document.getElementById('modalCancelar');
+    let ultimoFoco   = null;
 
-    link.href = 'eliminar_tarjeta.php?id=' + id;
-    desc.textContent = '¿Querés eliminar "' + titulo + '"? Esta acción no se puede deshacer.';
-    overlay.classList.add('activo');
+    // [clave, singular, plural]
+    const etiquetas = [
+        ['rsvp',     'confirmación de asistencia',  'confirmaciones de asistencia'],
+        ['muro',     'mensaje del muro de deseos',  'mensajes del muro de deseos'],
+        ['playlist', 'canción sugerida',            'canciones sugeridas'],
+        ['pagos',    'pago informado (con su comprobante)', 'pagos informados (con sus comprobantes)'],
+        ['hitos',    'hito de la línea de tiempo (con su foto)', 'hitos de la línea de tiempo (con sus fotos)'],
+        ['fotos',    'foto subida (book y portada)', 'fotos subidas (book y portada)'],
+    ];
 
-    // Foco al botón cancelar por accesibilidad
-    overlay.querySelector('.btn-modal-cancelar').focus();
-}
+    function agregarItem(texto) {
+        const li = document.createElement('li');
+        li.textContent = texto;
+        lista.appendChild(li);
+    }
 
-function cerrarModal() {
-    document.getElementById('modalEliminar').classList.remove('activo');
-}
+    function abrir(btn) {
+        const titulo = btn.dataset.eliminarTitulo || 'esta invitación';
+        let datos = null;
+        try { datos = btn.dataset.eliminarDatos ? JSON.parse(btn.dataset.eliminarDatos) : null; } catch (e) {}
 
-// Cerrar con Escape o clic en el fondo
-document.getElementById('modalEliminar').addEventListener('click', function(e) {
-    if (e.target === this) cerrarModal();
-});
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') cerrarModal();
-});
+        inputId.value    = btn.dataset.eliminarId;
+        desc.textContent = '¿Querés eliminar "' + titulo + '"? Esta acción no se puede deshacer.';
+
+        lista.textContent = '';
+        agregarItem('La invitación con todos sus textos y módulos');
+        if (datos) {
+            etiquetas.forEach(function (e) {
+                const n = datos[e[0]] || 0;
+                if (n > 0) agregarItem(n + ' ' + (n === 1 ? e[1] : e[2]));
+            });
+        } else {
+            agregarItem('Todas las respuestas, mensajes, pagos y fotos asociadas');
+        }
+
+        avisoActiva.hidden = btn.dataset.eliminarActiva !== '1';
+        avisoPagos.hidden  = !(datos && datos.pagos > 0);
+
+        confirmo.checked = false;
+        btnOk.disabled   = true;
+        btnOk.textContent = 'Sí, eliminar';
+
+        ultimoFoco = btn;
+        overlay.classList.add('activo');
+        btnCancel.focus();   // foco en la opción segura
+    }
+
+    function cerrar() {
+        if (!overlay.classList.contains('activo')) return;
+        overlay.classList.remove('activo');
+        if (ultimoFoco) ultimoFoco.focus();
+    }
+
+    document.querySelectorAll('[data-eliminar-id]').forEach(function (btn) {
+        btn.addEventListener('click', function () { abrir(btn); });
+    });
+
+    confirmo.addEventListener('change', function () { btnOk.disabled = !confirmo.checked; });
+
+    form.addEventListener('submit', function (e) {
+        if (!confirmo.checked) { e.preventDefault(); return; }
+        btnOk.disabled    = true;     // evita doble envío
+        btnOk.textContent = 'Eliminando...';
+    });
+
+    btnCancel.addEventListener('click', cerrar);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) cerrar(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrar(); });
+})();
 </script>
 
 </body>
